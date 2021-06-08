@@ -47,8 +47,8 @@
 
 /*product*/
 .tab_menu{float:left; width:100%; border-bottom:1px solid #b5b5b5; margin-bottom:20px;}
-.tab_menu li{float:left;}
-
+.tab_menu li{float:left;} 
+ 
 /*member*/
 .login_box01{width:620px; height:145px; *height:185px; padding-top:40px; padding-left:25px; margin-left:50px; margin-top:50px; margin-bottom:30px; position:relative; border-top:2px solid #fab5a3; border-bottom:1px solid #d8d8d8; background:url(../images/login_bg.jpg) 395px 13px no-repeat}
 .login_box01 li{padding-bottom:8px;}

@@ -21,14 +21,10 @@
 				return false;
 			}
 			if(!$("input[name='user_pass']").val()){
-				alert("비밀번호를 입력해주세요.");
+				alert("비밀번호를 입력해주세요."); 
 				$("input[name='user_pass']").focus();
 				return false;
 			}
-		});
-		
-		$("#logout").click(function(){
-			location.href ="/Project02/main/logout.do"; 
 		});
 	});
 </script>
@@ -39,7 +35,7 @@
 		<%@ include file="../include/top.jsp"%>
 		
 		<div id="main_visual">
-		<a href="/product/sub01.jsp"><img src="../images/main_image_01.jpg" /></a><a href="/product/sub01_02.jsp"><img src="../images/main_image_02.jpg" /></a><a href="/product/sub01_03.jsp"><img src="../images/main_image_03.jpg" /></a><a href="/product/sub02.jsp"><img src="../images/main_image_04.jpg" /></a>
+		<a href="../product/sub01.jsp"><img src="../images/main_image_01.jpg" /></a><a href="../product/sub01_02.jsp"><img src="../images/main_image_02.jpg" /></a><a href="../product/sub01_03.jsp"><img src="../images/main_image_03.jpg" /></a><a href="../product/sub02.jsp"><img src="../images/main_image_04.jpg" /></a>
 		</div>
 
 		<div class="main_contents">
@@ -47,11 +43,11 @@
 				<p class="main_title" style="border:0px; margin-bottom:0px;"><img src="../images/main_title01.gif" alt="로그인 LOGIN" /></p>
 				<div class="login_box">
 					<c:choose>
-						<c:when test="${loginStatus == 'Y'}">
+						<c:when test="${not empty user_id}">
 							<p style="padding:10px 0px 10px 10px"><span style="font-weight:bold; color:#333;">${dto.name }님,</span> 반갑습니다.<br />로그인 하셨습니다.</p>
 							<p style="text-align:right; padding-right:10px;">
 								<a href=""><img src="../images/login_btn04.gif" id="memberEdit" style ="cursor: pointer"/></a>
-								<a href=""><img src="../images/login_btn05.gif" id="logout" style ="cursor: pointer"/></a>
+								<a href="/Project02/main/logout.do"><img src="../images/login_btn05.gif"/></a>
 							</p> 
 						</c:when>
 						<c:otherwise>
@@ -64,7 +60,7 @@
 									</colgroup>
 									<tr>
 										<th><img src="../images/login_tit01.gif" alt="아이디" /></th>
-										<td><input type="text" name="user_id" value="" class="login_input" /></td>
+										<td><input type="text" name="user_id" value="${cookie_id }" class="login_input" /></td>
 										<td rowspan="2"><input type="image" src="../images/login_btn01.gif" alt="로그인" /></td>
 									</tr>
 									<tr>
@@ -72,32 +68,30 @@
 										<td><input type="password" name= "user_pass" value="" class="login_input" /></td>
 									</tr>
 								</table>
+								<p>
+									<input type="checkbox" name="idSave" value="Y" ${idSaveCheck }/><img src="../images/login_tit03.gif" alt="저장" />
+									<a href="../member/id_pw.jsp"><img src="../images/login_btn02.gif" alt="아이디/패스워드찾기" /></a>
+									<a href="../member/join01.jsp"><img src="../images/login_btn03.gif" alt="회원가입" /></a>
+								</p>
 							</form>
-							<p>
-								<input type="checkbox" name="" value="" /><img src="../images/login_tit03.gif" alt="저장" />
-								<a href="../member/id_pw.jsp"><img src="../images/login_btn02.gif" alt="아이디/패스워드찾기" /></a>
-								<a href="../member/join01.jsp"><img src="../images/login_btn03.gif" alt="회원가입" /></a>
-							</p>
 						</c:otherwise>
 					</c:choose>
 				</div>
 			</div>
 			<div class="main_con_center">
-				<p class="main_title"><img src="../images/main_title02.gif" alt="공지사항 NOTICE" /><a href="/space/sub01.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
+				<p class="main_title"><img src="../images/main_title02.gif" alt="공지사항 NOTICE" /><a href="../space/sub01.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
 				<ul class="main_board_list">
-					<li><p><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></p></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
+					<c:forEach items="${noticeList }" var="notice" end="4">
+						<li><p><a href="../space/sub01_view.jsp?board_idx=${notice.board_idx }&pageNum=1">${notice.title }</a><span>${notice.postdate }</span></p></li> 
+					</c:forEach>
 				</ul>
 			</div>
 			<div class="main_con_right">
-				<p class="main_title"><img src="../images/main_title03.gif" alt="자유게시판 FREE BOARD" /><a href="/space/sub03.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
+				<p class="main_title"><img src="../images/main_title03.gif" alt="자유게시판 FREE BOARD" /><a href="../space/sub03.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
 				<ul class="main_board_list">
-					<li><p><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></p></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지마포 구립 장애인 직업재활센터 홈페이지마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
-					<li><a href="">마포 구립 장애인 직업재활센터 홈페이지</a><span>2012.01.26</span></li>
+					<c:forEach items="${freeList }" var="free" end="4">
+						<li><p><a href="../space/sub03_view.jsp?board_idx=${free.board_idx }&pageNum=1">${free.title }</a><span>${free.postdate }</span></p></li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>
@@ -201,44 +195,16 @@
 				</div>
 			</div>
 			<div class="main_con_right">
-				<p class="main_title"><img src="../images/main_title06.gif" alt="사진게시판 PHOTO BOARD" /><a href="/space/sub04.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
+				<p class="main_title"><img src="../images/main_title06.gif" alt="사진게시판 PHOTO BOARD" /><a href="../space/sub04.jsp"><img src="../images/more.gif" alt="more" class="more_btn" /></a></p>
 				<ul class="main_photo_list">
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
-					<li>
-						<dl>
-							<dt><a href=""><img src="../images/g_img.gif" /></a></dt>
-							<dd><a href="">마포 구립 장애인...</a></dd>
-						</dl>
-					</li>
+					<c:forEach items="${photoList }" var="photo">
+						<li>
+							<dl>
+								<dt><a href=""><img src="../uploads/${photo.sfile }" /></a></dt>
+								<dd><a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=1">${photo.title }</a></dd>
+							</dl>
+						</li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>

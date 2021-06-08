@@ -34,8 +34,13 @@ public class MemberDAO {
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, id);
 			rs = psmt.executeQuery(); rs.next();
-			if(rs.getInt(1) > 0)
-				result = true;
+			if(rs.next()) {
+				if(rs.getInt(1) > 0)
+					result = true;
+			}
+			else {
+				result = false;
+			}
 		}
 		catch(Exception e) {
 			System.out.println("아이디 중복 확인 시 예외 발생");
@@ -52,9 +57,14 @@ public class MemberDAO {
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, id);
 			psmt.setString(2, pass);
-			rs = psmt.executeQuery(); rs.next();
-			if(rs.getInt(1) > 0)
-				result = true;
+			rs = psmt.executeQuery(); 
+			if(rs.next()) {
+				if(rs.getInt(1) > 0)
+					result = true;
+			}
+			else {
+				result = false;
+			}
 		}
 		catch(Exception e) {
 			System.out.println("회원 여부 확인 시 예외 발생");
@@ -62,6 +72,45 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public String findId(String name, String email) {
+		String id = null;
+		try {
+			String query = " SELECT id FROM membership WHERE name = ? AND email = ? "; 
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, name);
+			psmt.setString(2, email);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				id = rs.getString(1);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("아이디 정보 조회 중 예외 발생");
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
+	public String findPass(String id, String name, String email) {
+		String pass = null;
+		try {
+			String query = " SELECT pass FROM membership WHERE id = ? AND name = ? AND email = ? "; 
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, id);
+			psmt.setString(2, name);
+			psmt.setString(3, email);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				pass = rs.getString(1);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("비밀번호 정보 조회 중 예외 발생");
+			e.printStackTrace();
+		}
+		return pass;
 	}
 	
 	public MemberDTO getMemberInfo(String id) {

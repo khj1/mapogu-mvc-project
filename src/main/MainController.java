@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,30 +10,49 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import board.BoardDAO;
+import board.BoardDTO;
 import member.MemberDAO;
 import member.MemberDTO;
-import utils.JSFunction;
+import utils.CookieManager;
 
 @WebServlet("/main/main.do") 
 public class MainController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		MemberDAO dao = new MemberDAO();
-		MemberDTO dto = new MemberDTO();
-		HttpSession session = req.getSession();
+		MemberDAO mDao = new MemberDAO();
+		MemberDTO mDto = new MemberDTO();
 		
-		String loginStatus = "N";
-		String user_id = "";
+		// 로그인 여부 확인
+		HttpSession session = req.getSession();
 		if(session.getAttribute("user_id") != null) {
-			user_id = session.getAttribute("user_id").toString();
-			if(dao.isMember(user_id)) {
-				loginStatus = "Y";
-				dto = dao.getMemberInfo(user_id);
-			}
+			String user_id = session.getAttribute("user_id").toString();
+			mDto = mDao.getMemberInfo(user_id);
 		}
-			
-		req.setAttribute("dto", dto);
-		req.setAttribute("loginStatus", loginStatus);
+		mDao.close();
+		req.setAttribute("dto", mDto);
+		
+		
+		// 쿠키 정보 확인
+		String idSaveCheck = "";
+		String cookie_id = CookieManager.readCookies(req, "cookie_id");
+		if(!cookie_id.equals("")) {
+			idSaveCheck = "checked";
+		}
+		req.setAttribute("cookie_id", cookie_id);
+		req.setAttribute("idSaveCheck", idSaveCheck);
+		
+		
+		// 게시물 미리보기 기능
+		BoardDAO bDao = new BoardDAO();
+		List<BoardDTO> noticeList = bDao.previewList("notice");
+		List<BoardDTO> freeList = bDao.previewList("free");
+		List<BoardDTO> photoList = bDao.previewList("photo");
+		
+		req.setAttribute("noticeList", noticeList);
+		req.setAttribute("freeList", freeList);
+		req.setAttribute("photoList", photoList);
+		
 		req.getRequestDispatcher("/main/main.jsp").forward(req, resp);
 	}
 }

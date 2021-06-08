@@ -5,7 +5,7 @@
 	<ul id="lnb">
 		<%if(session.getAttribute("user_id") == null){ %>
 			<!-- 로그인전 -->
-			<li><a href="../member/login.jsp"><img src="../images/lnb01.gif" alt="LOGIN" /></a></li>
+			<li><a href="../member/loginPage.do"><img src="../images/lnb01.gif" alt="LOGIN" /></a></li>
 			<li><a href="../member/join01.jsp"><img src="../images/lnb02.gif" alt="JOIN" /></a></li>
 		<% }else{ %>
 			<!-- 로그인후 -->

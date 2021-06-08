@@ -3,38 +3,6 @@ package utils;
 import common.BoardConfig;
 
 public class BoardPage implements BoardConfig{
-	public static String pagingStr(int totalCount, int pageNum, String reqURI) {
-		
-		String pagingStr = "";
-		int totalPage = (int)Math.ceil((double)totalCount/PAGE_PER_SIZE);
-		int pageTemp = (((pageNum - 1) / PAGE_PER_BLOCK) * PAGE_PER_BLOCK) + 1;
-		if(pageTemp != 1) {
-			pagingStr += "<a href='" + reqURI + "?pageNum=1'>[첫페이지]</a>";
-			pagingStr += "<a href='" + reqURI + "?pageNum=" + (pageTemp -1) + "'>[이전블럭]</a>";
-		}
-		int blockCount = 1;
-		
-		while(blockCount <= PAGE_PER_BLOCK && pageTemp <= totalPage) {
-			if(pageTemp == pageNum) {
-				pagingStr += "&nbsp;" + pageTemp + "&nbsp;";
-			} 
-			else {
-				pagingStr += "&nbsp;<a href= '" + reqURI + "?pageNum=" + pageTemp + "'>"
-						+ pageTemp + "</a>&nbsp;"; 
-			}
-			pageTemp++;
-			blockCount++;
-		}
-		if(pageTemp <= totalPage) {
-			pagingStr += "<a href='" + reqURI + "?pageNum=" + pageTemp + "'>"
-					+ "[다음블럭]</a>";
-			pagingStr += "&nbsp;";
-			pagingStr += "<a href='" + reqURI + "?pageNum=" + totalPage + "'>"
-					+ "[마지막페이지]</a>";
-		}
-		return pagingStr;
-	}
-	
 	public static String pagingImg(int totalCount, int pageNum, String reqURI) {
 		
 		String pagingStr = "";
@@ -99,7 +67,7 @@ public class BoardPage implements BoardConfig{
 		return pagingStr;
 	}
 	
-	public static String pagingStr2(int totalCount, int pageNum, String reqURI, String queryStr) {
+	public static String pagingImg2(int totalCount, int pageNum, String reqURI, String queryStr) {
 		
 		String pagingStr = "";
 		int totalPage = (int)Math.ceil((double)totalCount/PAGE_PER_SIZE);

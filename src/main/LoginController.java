@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import member.MemberDAO;
+import utils.CookieManager;
 import utils.JSFunction;
 
 @WebServlet("/main/login.do")
@@ -21,8 +22,14 @@ public class LoginController extends HttpServlet{
 		MemberDAO dao = new MemberDAO();
 		String user_id = req.getParameter("user_id");
 		String user_pass = req.getParameter("user_pass");
+		String idSave = req.getParameter("idSave");
+		
 		
 		if(dao.isMember(user_id, user_pass)) {
+			if(idSave != null && idSave.equals("Y"))
+				CookieManager.makeCookie(resp, "cookie_id", user_id, 86400*7);
+			else
+				CookieManager.deleteCookie(resp, "cookie_id");
 			session.setAttribute("user_id", user_id);
 			resp.sendRedirect("../main/main.do");
 		}
