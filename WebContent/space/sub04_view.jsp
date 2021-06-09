@@ -4,6 +4,21 @@
 <%@ include file="../include/isLogin.jsp" %>
 <%@ include file="../include/global_head.jsp" %>
 <%@ include file="./common/view_include.jsp" %>
+<%! String board = "sub04"; %>
+<script>
+	$(function(){
+		$("#edit").click(function(){
+			location.href="sub04_edit.jsp?board_idx=<%=board_idx %>&pageNum=<%=pageNum %>";
+		});
+		$("#delete").click(function(){
+			if(confirm("게시물을 삭제하시겠습니까?"))
+				location.href="./common/delete_process.jsp?board_idx=<%=board_idx %>&board=<%=board%>&sfile=${dto.sfile}";
+		});
+		$("#list").click(function(){
+			location.href="sub04.jsp?board_idx=<%=board_idx %>&pageNum=<%=pageNum %>&<%=searchStr %>";
+		});
+	});
+</script>
  <body>
 	<center>
 	<div id="wrap">
@@ -17,8 +32,8 @@
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/space/sub01_title.gif" alt="공지사항" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;공지사항<p>
+					<img src="../images/space/sub04_title.gif" alt="사진게시판" class="con_title" />
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;사진게시판<p>
 				</div>
 				<div>
 
@@ -66,6 +81,7 @@
 		<th class="text-center" 
 			style="vertical-align:middle;">내용</th>
 		<td colspan="3">
+			<img src="../uploads/${dto.sfile }" /><br />
 			${dto.content }
 		</td>
 	</tr>
@@ -74,15 +90,20 @@
 			style="vertical-align:middle;">첨부파일</th>
 		<td colspan="3">
 			${dto.ofile }
+			<a href="./common/download_process.jsp?ofile=${dto.ofile }&sfile=${dto.sfile}&board_idx=${dto.board_idx}">
+				[이미지 다운로드]
+			</a>
 		</td>
 	</tr>
 </tbody>
 </table>
 
 <div class="row text-center" style="">
-	<button type="button" class="btn btn-warning" 
-		onclick="location.href='sub01.jsp?board_idx=<%=board_idx %>&pageNum=<%=pageNum %>&<%=searchStr %>';">리스트보기
-	</button>
+	<c:if test="${user_id == dto.id }">
+		<button type="button" class="btn btn-primary" id="edit">수정하기</button>
+		<button type="button" class="btn btn-success" id="delete">삭제하기</button>	
+	</c:if>
+	<button type="button" class="btn btn-warning" id="list">리스트보기</button>
 </div>
 </form> 
 

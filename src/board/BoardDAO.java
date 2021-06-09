@@ -1,6 +1,6 @@
 package board;
 
-import java.sql.Connection;   
+import java.sql.Connection;    
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,12 +31,17 @@ public class BoardDAO {
 	}
 	
 	// 게시물의 갯수 조회
-	public int countList(String flag) {
+	public int countList(Map<String, Object> map) {
 		int result = 0;
 		try {
 			String query = " SELECT COUNT(*) FROM multi_board WHERE flag = ? ";
+			
+			if(map.get("searchWord") != null) {
+				query += " AND " + map.get("searchField") + " "
+						+ "LIKE '%" + map.get("searchWord") + "%'"; 
+			}
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, flag);
+			psmt.setString(1, map.get("flag").toString());
 			rs = psmt.executeQuery(); rs.next();
 			result = rs.getInt(1);
 		}
@@ -125,8 +130,8 @@ public class BoardDAO {
 				dto.setContent(rs.getString("content").replaceAll("\r\n", "<br/>"));
 				dto.setPass(rs.getString("pass"));
 				dto.setPostdate(rs.getString("postdate"));
-				dto.setOfile(rs.getString("sfile"));
-				dto.setSfile(rs.getString("ofile"));
+				dto.setOfile(rs.getString("ofile"));
+				dto.setSfile(rs.getString("sfile"));
 				dto.setVisitcount(rs.getInt("visitcount"));
 				dto.setDowncount(rs.getInt("downcount"));
 				dto.setLikecount(rs.getInt("likecount"));
@@ -155,9 +160,10 @@ public class BoardDAO {
 			
 			if(rs.next()) {
 				dto.setBoard_idx(rs.getString("board_idx"));
+				dto.setId(rs.getString("id"));
 				dto.setName(rs.getString("name"));
 				dto.setTitle(rs.getString("title"));
-				dto.setContent(rs.getString("content").replaceAll("\r\n", "<br/>"));
+				dto.setContent(rs.getString("content"));
 				dto.setPostdate(rs.getString("postdate"));
 				dto.setOfile(rs.getString("ofile"));
 				dto.setSfile(rs.getString("sfile"));
@@ -259,6 +265,44 @@ public class BoardDAO {
 		}
 		catch(Exception e) {
 			System.out.println("게시물 입력 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// 수정하기 기능
+	public int updateEdit(BoardDTO dto) {
+		int result = 0;
+		try {
+			String query = "UPDATE multi_board SET "
+					+ " title =?, content =?, ofile =?, sfile =?, postdate= NOW() "
+					+ " WHERE board_idx =?";
+			psmt =con.prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getOfile());
+			psmt.setString(4, dto.getSfile());
+			psmt.setString(5, dto.getBoard_idx());
+			result = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("게시물 수정 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// 게시물 삭제하기 기능
+	public int deletePost(String board_idx) {
+		int result = 0;
+		try {
+			String query = "DELETE FROM multi_board WHERE board_idx = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, board_idx);
+			result = psmt.executeUpdate();
+		}
+		catch (Exception e) {
+			System.out.println("게시물 삭제 중 오류 발생");
 			e.printStackTrace();
 		}
 		return result;

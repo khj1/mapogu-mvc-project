@@ -10,46 +10,52 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="../../include/isLogin.jsp" %>
 <%
-String saveDirectory = application.getRealPath("/uploads");
+String saveDirectory = request.getServletContext().getRealPath("/uploads");
 int maxPostSize = 1024 * 1000;
 
 MultipartRequest mr = FileUtil.uploadFile(request, saveDirectory, maxPostSize);
 if(mr != null) {
-	String id = session.getAttribute("user_id").toString();
-	String board = mr.getParameter("board");
-	String content = mr.getParameter("content");
-	String title = mr.getParameter("title");
 	String pass = mr.getParameter("pass");
-	String flag = mr.getParameter("flag");
+	String board = mr.getParameter("board");
+	String title = mr.getParameter("title");
+	String content = mr.getParameter("content");
+	String pageNum = mr.getParameter("pageNum");
+	String board_idx = mr.getParameter("board_idx");
+	String prevOfile = mr.getParameter("prevOfile");
+	String prevSfile = mr.getParameter("prevSfile");
 	
 	BoardDTO bDto = new BoardDTO();
-	bDto.setId(id);
+	bDto.setBoard_idx(board_idx);
 	bDto.setContent(content);
 	bDto.setTitle(title);
 	bDto.setPass(pass);
-	bDto.setFlag(flag);
 	
-	// 파일 이름 변경 처리
 	String fileName = mr.getFilesystemName("ofile");
 	if(fileName != null) {
 		String newFileName = FileUtil.renameFile(fileName, saveDirectory);
 		
-		bDto.setOfile(fileName); 
+		bDto.setOfile(fileName);
 		bDto.setSfile(newFileName);
+		
+		FileUtil.deleteFile(request, "/uploads", prevSfile);
+	}
+	else {
+		 bDto.setOfile(prevOfile);
+		 bDto.setSfile(prevSfile);
 	}
 		
 	BoardDAO bDao = new BoardDAO();
-	int result = bDao.insertWrite(bDto);
+	int result = bDao.updateEdit(bDto);
 	bDao.close();
 	
 	if(result == 1) {
-		response.sendRedirect("../" + board + ".jsp");
+		response.sendRedirect("../" + board + "_view.jsp?board_idx=" + board_idx + "&pageNum=" + pageNum);
 	}
 	else {
-		response.sendRedirect("../" + board + "_write.jsp");
+		JSFunction.alertBack(response, "글을 수정하지 못했습니다.");
 	}
 }
 else {
-	JSFunction.alertBack("글 작성 중 오류가 발생했습니다.", out);
+	JSFunction.alertBack(response, "글 수정 중 오류가 발생하였습니다.");
 }
 %>

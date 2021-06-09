@@ -4,6 +4,21 @@
 <%@ include file="../include/isLogin.jsp" %>
 <%@ include file="../include/global_head.jsp" %>
 <%@ include file="./common/view_include.jsp" %>
+<%! String board = "sub03"; %>
+<script>
+	$(function(){
+		$("#edit").click(function(){
+			location.href="sub03_edit.jsp?board_idx=<%=board_idx %>&pageNum=<%=pageNum %>";
+		});
+		$("#delete").click(function(){
+			if(confirm("게시물을 삭제하시겠습니까?"))
+				location.href="./common/delete_process.jsp?board_idx=<%=board_idx %>&board=<%=board%>";
+		});
+		$("#list").click(function(){
+			location.href="sub03.jsp?board_idx=<%=board_idx %>&pageNum=<%=pageNum %>&<%=searchStr %>";
+		});
+	});
+</script>
  <body>
 	<center>
 	<div id="wrap">
@@ -73,21 +88,29 @@
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
 		<td colspan="3">
-			${dto.ofile }
-			<a href="./common/download_process.jsp?ofile=${dto.ofile }&sfile=${dto.sfile}&board_idx=${dto.board_idx}">
-				[다운로드]
-			</a>
+			<c:choose>
+				<c:when test="${not empty dto.ofile }">
+					${dto.ofile }
+					<a href="./common/download_process.jsp?ofile=${dto.ofile }&sfile=${dto.sfile}&board_idx=${dto.board_idx}">
+						[다운로드]
+					</a>
+				</c:when>
+				<c:otherwise>
+					없음
+				</c:otherwise>
+				
+			</c:choose>
 		</td>
 	</tr>
 </tbody>
 </table>
 
 <div class="row text-center" style="">
-	<button type="button" class="btn btn-primary">수정하기</button>
-	<button type="button" class="btn btn-success">삭제하기</button>	
-	<button type="button" class="btn btn-warning" 
-		onclick="location.href='sub03.jsp?board_idx=<%=board_idx %>&pageNum=<%=pageNum %>&<%=searchStr %>';">리스트보기
-	</button>
+	<c:if test="${user_id == dto.id }">
+		<button type="button" class="btn btn-primary" id="edit">수정하기</button>
+		<button type="button" class="btn btn-success" id="delete">삭제하기</button>	
+	</c:if>
+	<button type="button" class="btn btn-warning" id="list">리스트보기</button>
 </div>
 </form> 
 

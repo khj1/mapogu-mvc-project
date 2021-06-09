@@ -20,7 +20,8 @@ if(searchWord != null){
 	searchStr = "searchField=" + searchField + "&searchWord=" + searchWord;
 }
 
-int totalCount = dao.countList(flag);
+map.put("flag", flag);
+int totalCount = dao.countList(map);
 
 int pageNum = 1;
 String pageTemp = request.getParameter("pageNum");
@@ -38,6 +39,7 @@ map.put("flag", flag);
 map.put("start", start);
 map.put("pageSize", pageSize);
 List<BoardDTO> boardList = dao.selectList(map);
+
 pageContext.setAttribute("boardList", boardList);
 pageContext.setAttribute("searchStr", searchStr);
 pageContext.setAttribute("totalCount", totalCount);

@@ -28,14 +28,14 @@
 <!-- 검색부분 -->
 <form class="form-inline">	
 	<div class="form-group">
-		<select name="keyField" class="form-control">
-			<option value="">제목</option>
-			<option value="">작성자</option>
-			<option value="">내용</option>
+		<select name="searchField" class="form-control">
+			<option value="title">제목</option>
+			<option value="name">작성자</option>
+			<option value="content">내용</option>
 		</select>
 	</div>
 	<div class="input-group">
-		<input type="text" name="keyString"  class="form-control"/>
+		<input type="text" name="searchWord"  class="form-control"/>
 		<div class="input-group-btn">
 			<button type="submit" class="btn btn-default">
 				<i class="glyphicon glyphicon-search"></i>
@@ -87,7 +87,7 @@
 					<td class="text-center">${list.visitcount }</td>
 					<td class="text-center">
 						<c:if test="${not empty list.ofile}">
-							<i class="material-icons">attach_file</i> 
+							<i class="material-icons" style="font-size: 16px">attach_file</i> 
 						</c:if>
 					</td>
 				</tr>

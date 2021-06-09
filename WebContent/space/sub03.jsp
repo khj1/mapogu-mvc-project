@@ -5,6 +5,13 @@
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%! String flag = "free"; %>
 <%@ include file="./common/list_include.jsp" %>
+<script>
+	$(function(){
+		$("#write").click(function(){
+			location.href="sub03_write.jsp";
+		});
+	});
+</script>
  <body>
 	<center>
 	<div id="wrap">
@@ -28,14 +35,14 @@
 <!-- 검색부분 -->
 <form class="form-inline">	
 	<div class="form-group">
-		<select name="keyField" class="form-control">
-			<option value="">제목</option>
-			<option value="">작성자</option>
-			<option value="">내용</option>
+		<select name="searchField" class="form-control">
+			<option value="title">제목</option>
+			<option value="name">작성자</option>
+			<option value="content">내용</option>
 		</select>
 	</div>
 	<div class="input-group">
-		<input type="text" name="keyString"  class="form-control"/>
+		<input type="text" name="searchWord"  class="form-control"/>
 		<div class="input-group-btn">
 			<button type="submit" class="btn btn-default">
 				<i class="glyphicon glyphicon-search"></i>
@@ -87,7 +94,7 @@
 					<td class="text-center">${list.visitcount }</td>
 					<td class="text-center">
 						<c:if test="${not empty list.ofile}">
-							<i class="material-icons">attach_file</i> 
+							<i class="material-icons"  style="font-size: 16px">attach_file</i> 
 						</c:if>
 					</td>
 				</tr>
@@ -99,18 +106,7 @@
 </div>
 <div class="row text-right" style="padding-right:50px;">
 	<!-- 각종 버튼 부분 -->
-	<button type="button" class="btn btn-default" 
-		onclick="location.href='sub03_write.jsp';">글쓰기</button>
-	<!-- <button type="reset" class="btn">Reset</button> -->
-		
-				
-	<!-- 
-	<button type="button" class="btn btn-primary">수정하기</button>
-	<button type="button" class="btn btn-success">삭제하기</button>
-	<button type="button" class="btn btn-info">답글쓰기</button>
-	<button type="button" class="btn btn-warning">리스트보기</button>
-	<button type="submit" class="btn btn-danger">전송하기</button> 
-	-->
+	<button type="button" class="btn btn-default" id="write">글쓰기</button>
 </div>
 <div class="row text-center">
 	<!-- 페이지번호 부분 -->

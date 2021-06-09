@@ -200,9 +200,21 @@
 					<c:forEach items="${photoList }" var="photo">
 						<li>
 							<dl>
-								<dt><a href=""><img src="../uploads/${photo.sfile }" /></a></dt>
-								<dd><a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=1">${photo.title }</a></dd>
-							</dl>
+								<dt><a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=1"><img src="../uploads/${photo.sfile }" width="90px" height="90px" /></a></dt>
+								<dd>
+									<a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=1">
+										<c:choose>
+											<c:when test="${photo.title.length() > 8 }">
+												${photo.title.substring(0,8) }...
+											</c:when>
+											<c:otherwise>
+												${photo.title }
+											</c:otherwise>
+										</c:choose>
+										
+									</a>
+								</dd>
+							</dl> 
 						</li>
 					</c:forEach>
 				</ul>

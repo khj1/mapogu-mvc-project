@@ -16,6 +16,7 @@
 <link href="../bootstrap3.3.7/css/bootstrap.min.css" rel="stylesheet">
 <script src="../bootstrap3.3.7/jquery/jquery-3.6.0.min.js"></script>				
 <script src="../bootstrap3.3.7/js/bootstrap.min.js"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>

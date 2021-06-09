@@ -3,22 +3,41 @@
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ include file="../include/isLogin.jsp" %>
 <%@ include file="../include/global_head.jsp" %>
-<%@ include file="./common/view_include.jsp" %>
+<%! String board = "sub03"; %>
+<script>
+	$(function(){
+		$("#edit").click(function(){
+			location.href="../community/edit.do?board_idx=${dto.board_idx}&pageNum=${pageNum}&board=sub01";
+		});
+		$("#delete").click(function(){
+			if(confirm("게시물을 삭제하시겠습니까?"))
+				location.href="../community/delete.do?board_idx=${dto.board_idx}&board=sub01";
+		});
+		$("#list").click(function(){
+			if(${not empty searchStr}){
+				location.href="../community/list.do?board_idx=${dto.board_idx}&pageNum=${pageNum}&${searchStr}&board=${board}&flag=${flag}";
+			}
+			else{
+				location.href="../community/list.do?board_idx=${dto.board_idx}&pageNum=${pageNum}&board=${board}&flag=${flag}";
+			}
+		});
+	});
+</script>
  <body>
 	<center>
 	<div id="wrap">
 		<%@ include file="../include/top.jsp" %>
 
-		<img src="../images/space/sub_image.jpg" id="main_visual" />
+		<img src="../images/community/sub_image.jpg" id="main_visual" />
 
 		<div class="contents_box">
 			<div class="left_contents">
-				<%@ include file = "../include/space_leftmenu.jsp" %>
+				<%@ include file = "../include/community_leftmenu.jsp" %>
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/space/sub01_title.gif" alt="공지사항" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;열린공간&nbsp;>&nbsp;공지사항<p>
+					<img src="../images/community/sub02_title.gif" alt="보호자 게시판" class="con_title" />
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;보호자 게시판<p> 
 				</div>
 				<div>
 
@@ -73,16 +92,29 @@
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
 		<td colspan="3">
-			${dto.ofile }
+			<c:choose>
+				<c:when test="${not empty dto.ofile }">
+					${dto.ofile }
+					<a href="../community/download.do?ofile=${dto.ofile }&sfile=${dto.sfile}&board_idx=${dto.board_idx}">
+						[다운로드]
+					</a>
+				</c:when>
+				<c:otherwise>
+					없음
+				</c:otherwise>
+				
+			</c:choose>
 		</td>
 	</tr>
 </tbody>
 </table>
 
 <div class="row text-center" style="">
-	<button type="button" class="btn btn-warning" 
-		onclick="location.href='sub01.jsp?board_idx=<%=board_idx %>&pageNum=<%=pageNum %>&<%=searchStr %>';">리스트보기
-	</button>
+	<c:if test="${user_id == dto.id }">
+		<button type="button" class="btn btn-primary" id="edit">수정하기</button>
+		<button type="button" class="btn btn-success" id="delete">삭제하기</button>	
+	</c:if>
+	<button type="button" class="btn btn-warning" id="list">리스트보기</button>
 </div>
 </form> 
 

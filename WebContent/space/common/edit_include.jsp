@@ -9,14 +9,11 @@ String searchField = request.getParameter("searchField");
 String searchWord = request.getParameter("searchWord");
 String searchStr = "";
 if(searchWord != null)
-	searchStr = "searchField=" + searchField + "&searchWord=" + searchWord;
+	searchStr = "searchField=" + searchField + "&searchWord" + searchWord;
 
-BoardDAO dao = new BoardDAO();
-dao.updateVisitCount(board_idx);
+BoardDAO bDao = new BoardDAO();
+BoardDTO bDto = bDao.selectView(board_idx);
+pageContext.setAttribute("bDto", bDto);
 
-BoardDTO dto = dao.selectView(board_idx);
-dto.setContent(dto.getContent().replaceAll("\r\n", "<br/>"));
-pageContext.setAttribute("dto", dto);
-
-dao.close();
+bDao.close();
 %>
