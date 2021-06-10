@@ -1,6 +1,6 @@
-package board;
+package community;
 
-public class BoardDTO {
+public class CommunityDTO {
 	private String board_idx;
 	private String flag; 
 	private String id; 

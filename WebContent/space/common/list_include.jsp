@@ -2,13 +2,13 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="common.BoardConfig"%>
-<%@page import="board.BoardDTO"%>
+<%@page import="community.CommunityDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="board.BoardDAO"%>
+<%@page import="community.CommuinityDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-BoardDAO dao = new BoardDAO();
+CommuinityDAO dao = new CommuinityDAO();
 Map<String, Object> map = new HashMap<String, Object>(); 
 
 String searchField = request.getParameter("searchField");
@@ -38,7 +38,7 @@ map.put("searchWord", searchWord);
 map.put("flag", flag);
 map.put("start", start);
 map.put("pageSize", pageSize);
-List<BoardDTO> boardList = dao.selectList(map);
+List<CommunityDTO> boardList = dao.selectList(map);
 
 pageContext.setAttribute("boardList", boardList);
 pageContext.setAttribute("searchStr", searchStr);

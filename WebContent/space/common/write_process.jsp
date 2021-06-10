@@ -1,9 +1,9 @@
 <%@page import="member.MemberDAO"%>
 <%@page import="member.MemberDTO"%>
 <%@page import="utils.JSFunction"%>
-<%@page import="board.BoardDAO"%>
+<%@page import="community.CommuinityDAO"%>
 <%@page import="fileupload.FileUtil"%>
-<%@page import="board.BoardDTO"%>
+<%@page import="community.CommunityDTO"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -22,7 +22,7 @@ if(mr != null) {
 	String pass = mr.getParameter("pass");
 	String flag = mr.getParameter("flag");
 	
-	BoardDTO bDto = new BoardDTO();
+	CommunityDTO bDto = new CommunityDTO();
 	bDto.setId(id);
 	bDto.setContent(content);
 	bDto.setTitle(title);
@@ -38,7 +38,7 @@ if(mr != null) {
 		bDto.setSfile(newFileName);
 	}
 		
-	BoardDAO bDao = new BoardDAO();
+	CommuinityDAO bDao = new CommuinityDAO();
 	int result = bDao.insertWrite(bDto);
 	bDao.close();
 	

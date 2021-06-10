@@ -4,7 +4,7 @@
 <%@ include file="../include/isLogin.jsp" %>
 <%@ include file="../include/global_head.jsp" %>
 <%@ include file="./common/view_include.jsp" %>
-<%! String board = "sub03"; %>
+<%!String board = "sub03";%>
 <script>
 	$(function(){
 		$("#edit").click(function(){

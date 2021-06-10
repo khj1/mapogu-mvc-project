@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import member.MemberDAO;
+import member.MemberDTO;
 import utils.CookieManager;
 import utils.JSFunction;
 
@@ -30,7 +31,11 @@ public class LoginController extends HttpServlet{
 				CookieManager.makeCookie(resp, "cookie_id", user_id, 86400*7);
 			else
 				CookieManager.deleteCookie(resp, "cookie_id");
+			
+			String auth = dao.getMemberInfo(user_id).getAuth();
+			System.out.println(auth);
 			session.setAttribute("user_id", user_id);
+			session.setAttribute("auth", auth);
 			resp.sendRedirect("../main/main.do");
 		}
 		else if(dao.isMember(user_id))

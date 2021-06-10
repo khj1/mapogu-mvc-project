@@ -1,4 +1,4 @@
-package board;
+package community;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import common.BoardConfig;
 import fileupload.FileUtil;
 import member.MemberDAO;
 import member.MemberDTO;
+import utils.Authority;
 import utils.BoardPage;
 import utils.JSFunction;
 
@@ -26,43 +27,54 @@ import utils.JSFunction;
 public class WriteController extends HttpServlet implements BoardConfig{
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String flag = req.getParameter("flag");
-		String board = req.getParameter("board");
-		
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-		if(session.getAttribute("user_id") == null) {
-			JSFunction.alertLocation(resp, "로그인 후 이용해주세요.", "../member/login.jsp");
-			return;
-		}
+		
+		if(!Authority.isLogin(resp, session)) return;
+		
+		if(req.getMethod().equals("GET"))
+			doGet(req, resp);
+		else if(req.getMethod().equals("POST"))
+			doPost(req, resp);
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		String flag = req.getParameter("flag");
 		String id = session.getAttribute("user_id").toString();
+		
+		// 권한 인증
+		if(!Authority.checkAuth(resp, session, flag)) return;
+		
 		MemberDAO mDao = new MemberDAO();
-		MemberDTO mDto = mDao.getMemberInfo(id);
+		MemberDTO mDto = mDao.getMemberInfo(id); 
 		req.setAttribute("mDto", mDto);
 		req.setAttribute("flag", flag);
-		req.setAttribute("board", board);
 		mDao.close();
 		
-		req.getRequestDispatcher("/community/" + board + "_write.jsp").forward(req, resp);
+		req.getRequestDispatcher("/community/" + flag + "_write.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session = req.getSession();
 		ServletContext application = req.getServletContext();
+		HttpSession session = req.getSession();
 		String saveDirectory = application.getRealPath("/uploads");
 		int maxPostSize = 1024 * 1000;
 
 		MultipartRequest mr = FileUtil.uploadFile(req, saveDirectory, maxPostSize);
 		if(mr != null) {
+			String flag = mr.getParameter("flag");
 			String id = session.getAttribute("user_id").toString();
-			String board = mr.getParameter("board");
 			String content = mr.getParameter("content");
 			String title = mr.getParameter("title");
 			String pass = mr.getParameter("pass");
-			String flag = mr.getParameter("flag");
 			
-			BoardDTO bDto = new BoardDTO();
+			// 권한 인증
+			if(!Authority.checkAuth(resp, session, flag)) return;
+			
+			CommunityDTO bDto = new CommunityDTO();
 			bDto.setId(id);
 			bDto.setContent(content);
 			bDto.setTitle(title);
@@ -78,12 +90,12 @@ public class WriteController extends HttpServlet implements BoardConfig{
 				bDto.setSfile(newFileName);
 			}
 				
-			BoardDAO bDao = new BoardDAO();
+			CommuinityDAO bDao = new CommuinityDAO();
 			int result = bDao.insertWrite(bDto);
 			bDao.close();
 			
 			if(result == 1) {
-				resp.sendRedirect("../community/list.do?board=" + board + "&flag=" + flag);
+				resp.sendRedirect("../community/list.do?flag=" + flag);
 			}
 			else {
 				JSFunction.alertBack(resp, "게시물을 업로드하지 못했습니다.");

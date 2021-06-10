@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/global_head.jsp" %>
-
+<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
  <body>
 	<center>
@@ -73,6 +73,11 @@
 				</table>
 
 				<p class="con_tit"><img src="../images/market/basket_title02.gif" /></p>
+				
+				<!-- 폼값 시작 -->
+				<form action="">
+				<input type="hidden" name="payment" value=""/>
+				<input type="hidden" name="id" value=""/>
 				<table cellpadding="0" cellspacing="0" border="0" class="con_table" style="width:100%;" style="margin-bottom:50px;">
 					<colgroup>
 						<col width="15%" />
@@ -81,25 +86,32 @@
 					<tbody>
 						<tr>
 							<th>성명</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" /></td>
+							<td style="text-align:left;"><input type="text" name="order_name"  value="" class="join_input" /></td>
 						</tr>
 						<tr>
 							<th>주소</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:50px; margin-bottom:5px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px; margin-bottom:5px;" /> <a href=""><img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" /></a><br /><input type="text" name=""  value="" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br /><input type="text" name=""  value="" class="join_input" style="width:300px;" /> 나머지주소</td>
+							<td style="text-align:left;">
+								<input type="text" name="order_zipcode"  value="" class="join_input" style="width:80px; margin-bottom:5px;" /><a href=""><img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" /></a><br />
+								<input type="text" name="order_addr1"  value="" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br />
+								<input type="text" name="order_addr2"  value="" class="join_input" style="width:300px;" /> 나머지주소</td>
 						</tr>
 						<tr>
 							<th>휴대폰</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;"><input type="text" name="order_mobile1"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile2"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile3"  value="" class="join_input" style="width:50px;" /></td>
 						</tr>
 						<tr>
 							<th>이메일주소</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:100px;" /> @ <input type="text" name=""  value="" class="join_input" style="width:100px;" /></td>
+							<td style="text-align:left;"><input type="text" name="order_email1"  value="" class="join_input" style="width:100px;" /> @ <input type="text" name="order_email12"  value="" class="join_input" style="width:100px;" /></td>
 						</tr>
 					</tbody>
 				</table>
 
 				<p class="con_tit"><img src="../images/market/basket_title03.gif" /></p>
-				<p style="text-align:right">배송지 정보가 주문자 정보와 동일합니까? 예<input type="radio" /> 아니오<input type="radio" /></p>
+				<p style="text-align:right">
+					배송지 정보가 주문자 정보와 동일합니까? 
+					예<input type="radio" name =isEqual value = "Y"/> 
+					아니오<input type="radio" name =isEqual value = "N" />
+				</p>
 				<table cellpadding="0" cellspacing="0" border="0" class="con_table" style="width:100%;" style="margin-bottom:50px;">
 					<colgroup>
 						<col width="15%" />
@@ -108,23 +120,31 @@
 					<tbody>
 						<tr>
 							<th>성명</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" /></td>
+							<td style="text-align:left;"><input type="text" name="receipt_name"  value="" class="join_input" /></td>
 						</tr>
 						<tr>
 							<th>주소</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:50px; margin-bottom:5px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px; margin-bottom:5px;" /> <a href=""><img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" /></a><br /><input type="text" name=""  value="" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br /><input type="text" name=""  value="" class="join_input" style="width:300px;" /> 나머지주소</td>
+							<td style="text-align:left;">
+								<input type="text" name="receipt_zipcode"  value="" class="join_input" style="width:80px; margin-bottom:5px;" />
+								<a href="">
+									<img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" />
+								</a><br />
+								<input type="text" name="receipt_addr1"  value="" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br />
+								<input type="text" name="receipt_addr2"  value="" class="join_input" style="width:300px;" /> 나머지주소</td>
 						</tr>
 						<tr>
 							<th>휴대폰</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /> - <input type="text" name=""  value="" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;"><input type="text" name="receipt_mobile1"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="receipt_mobile2"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="receipt_mobile3"  value="" class="join_input" style="width:50px;" /></td>
 						</tr>
 						<tr>
 							<th>이메일주소</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:100px;" /> @ <input type="text" name=""  value="" class="join_input" style="width:100px;" /></td>
+							<td style="text-align:left;"><input type="text" name="receipt_email1"  value="" class="join_input" style="width:100px;" /> @ <input type="text" name="receipt_email2"  value="" class="join_input" style="width:100px;" /></td>
 						</tr>
 						<tr>
 							<th>배송메세지</th>
-							<td style="text-align:left;"><input type="text" name=""  value="" class="join_input" style="width:500px;" /></td>
+							<td style="text-align:left;">
+								<input type="text" name="receipt_msg"  value="" class="join_input" style="width:500px;" />
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -138,15 +158,22 @@
 					<tbody>
 						<tr>
 							<th>결제금액</th>
-							<td style="text-align:left;"><span class="money">60,000원</span></td>
+							<td style="text-align:left;"><span class="money" id="payment">60,000원</span></td>
 						</tr>
 						<tr>
 							<th>결제방식선택</th>
-							<td style="text-align:left;"><input type="radio" /> 카드결제&nbsp;&nbsp;&nbsp;<input type="radio" /> 무통장입금&nbsp;&nbsp;&nbsp;<input type="radio" /> 실시간 계좌이체</td>
+							<td style="text-align:left;">
+								<input type="radio" value="card"/> 카드결제&nbsp;&nbsp;&nbsp;
+								<input type="radio" value="without"/> 무통장입금&nbsp;&nbsp;&nbsp;
+								<input type="radio" value="transfer"/> 실시간 계좌이체&nbsp;&nbsp;&nbsp;
+								<input type="radio" value="kakao"/> 카카오페이</td>
 						</tr>
 					</tbody>
 				</table>
 				<p style="text-align:right;"><a href=""><img src="../images/market/basket_btn04.gif" /></a></p>
+				</form>
+				<!-- 폼값 끝 -->
+				
 			</div>
 		</div>
 		<%@ include file="../include/quick.jsp" %>

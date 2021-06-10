@@ -16,8 +16,8 @@
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/community/sub01_title.gif" alt="직원자료실" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;직원자료실<p> 
+					<img src="../images/community/sub02_title.gif" alt="보호자 게시판" class="con_title" />
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;보호자 게시판<p> 
 				</div>
 				<div> 
 
@@ -25,7 +25,6 @@
 		padding-right:50px;">
 <!-- 검색부분 -->
 <form action ="../community/list.do" class="form-inline">	
-	<input type="hidden" name="board" value="${board}"/>
 	<input type="hidden" name="flag" value="${flag }"/> 
 	<div class="form-group">
 		<select name="searchField" class="form-control">
@@ -84,10 +83,10 @@
 					<td class="text-left">
 						<c:choose>
 							<c:when test="${empty searchStr }">
-								<a href="../community/view.do?board_idx=${list.board_idx }&pageNum=${pageNum }&board=${board}&flag=${flag}">${list.title }</a>
+								<a href="../community/view.do?flag=${flag}&board_idx=${list.board_idx }&pageNum=${pageNum }">${list.title }</a>
 							</c:when>
 							<c:otherwise>
-								<a href="../community/view.do?board_idx=${list.board_idx }&pageNum=${pageNum }&board=${board}&flag=${flag}&${searchStr}">${list.title }</a>
+								<a href="../community/view.do?flag=${flag}&board_idx=${list.board_idx }&pageNum=${pageNum }&${searchStr}">${list.title }</a>
 							</c:otherwise>							
 						</c:choose>
 					</td>
@@ -103,13 +102,13 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
-	</tbody>
+	</tbody> 
 	</table>
 </div>
 <div class="row text-right" style="padding-right:50px;">
 	<!-- 각종 버튼 부분 -->
 	<button type="button" class="btn btn-default" id="write"
-		onclick="location.href='../community/write.do?board=${board}&flag=${flag }';">글쓰기</button>
+		onclick="location.href='../community/write.do?flag=${flag }';">글쓰기</button>
 </div>
 <div class="row text-center">
 	<!-- 페이지번호 부분 -->

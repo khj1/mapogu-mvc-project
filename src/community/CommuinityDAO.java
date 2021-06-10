@@ -1,4 +1,4 @@
-package board;
+package community;
 
 import java.sql.Connection;    
 import java.sql.DriverManager;
@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BoardDAO {
+public class CommuinityDAO {
 	public Connection con;
 	public Statement stmt;
 	public PreparedStatement psmt;
 	public ResultSet rs;
 	
-	public BoardDAO() {
+	public CommuinityDAO() {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			String url = "jdbc:mariadb://127.0.0.1:3306/suamil_db";
@@ -54,8 +54,8 @@ public class BoardDAO {
 	}
 	
 	// 미리보기를 위해 게시물의 일부분만 조회
-	public List<BoardDTO> previewList(String flag){
-		List<BoardDTO> list = new ArrayList<BoardDTO>();
+	public List<CommunityDTO> previewList(String flag){
+		List<CommunityDTO> list = new ArrayList<CommunityDTO>();
 		try {
 			String query = ""
 					+ " SELECT board_idx, title, DATE_FORMAT(postdate, '%Y-%m-%d'), ofile, sfile "
@@ -68,7 +68,7 @@ public class BoardDAO {
 			psmt.setString(1, flag);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
-				BoardDTO dto = new BoardDTO();
+				CommunityDTO dto = new CommunityDTO();
 				dto.setBoard_idx(rs.getString(1));
 				
 				//길이가 긴 제목을 문자열 처리
@@ -91,8 +91,8 @@ public class BoardDAO {
 	}
 	
 	// 전체 게시물 조회
-	public List<BoardDTO> selectList(Map<String, Object> map){
-		List<BoardDTO> list = new ArrayList<BoardDTO>();
+	public List<CommunityDTO> selectList(Map<String, Object> map){
+		List<CommunityDTO> list = new ArrayList<CommunityDTO>();
 		try {
 			String query = ""
 					+ " SELECT B.*, M.name "
@@ -116,7 +116,7 @@ public class BoardDAO {
 			psmt.setInt(3, Integer.parseInt(map.get("pageSize").toString()));
 			rs = psmt.executeQuery();
 			while(rs.next()) {
-				BoardDTO dto = new BoardDTO();
+				CommunityDTO dto = new CommunityDTO();
 				dto.setBoard_idx(rs.getString("board_idx"));
 				dto.setId(rs.getString("id"));
 				dto.setName(rs.getString("name"));
@@ -146,8 +146,8 @@ public class BoardDAO {
 		return list;
 	}
 	
-	public BoardDTO selectView(String board_idx) {
-		BoardDTO dto = new BoardDTO();
+	public CommunityDTO selectView(String board_idx) {
+		CommunityDTO dto = new CommunityDTO();
 		String query = ""
 				+ " SELECT B.*, M.name, M.email "
 				+ " FROM multi_board B INNER JOIN membership M "
@@ -246,7 +246,7 @@ public class BoardDAO {
 		}
 	}
 	
-	public int insertWrite(BoardDTO dto) {
+	public int insertWrite(CommunityDTO dto) {
 		int result = 0;
 		try {
 			String query = "INSERT INTO multi_board ( "
@@ -271,7 +271,7 @@ public class BoardDAO {
 	}
 	
 	// 수정하기 기능
-	public int updateEdit(BoardDTO dto) {
+	public int updateEdit(CommunityDTO dto) {
 		int result = 0;
 		try {
 			String query = "UPDATE multi_board SET "
@@ -303,6 +303,25 @@ public class BoardDAO {
 		}
 		catch (Exception e) {
 			System.out.println("게시물 삭제 중 오류 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public boolean isWriter(String board_idx, String id) {
+		boolean result = false;
+		try {
+			String query = "SELECT COUNT(*) FROM multi_board WHERE board_idx = ? AND id = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, board_idx);
+			psmt.setString(2, id);
+			rs = psmt.executeQuery(); rs.next();
+			if(rs.getInt(1) != 0)
+				result = true;
+		}
+		catch (Exception e) {
+			System.out.println("작성자 여부 확인 중 오류 발생");
+			result = false;
 			e.printStackTrace();
 		}
 		return result;

@@ -3,7 +3,7 @@
 
 <%@ include file="../include/global_head.jsp" %>
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%! String flag = "free"; %>
+<%!String flag = "free";%>
 <%@ include file="./common/list_include.jsp" %>
 <script>
 	$(function(){

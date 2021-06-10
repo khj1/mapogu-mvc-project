@@ -1,5 +1,5 @@
-<%@page import="board.BoardDTO"%>
-<%@page import="board.BoardDAO"%>
+<%@page import="community.CommunityDTO"%>
+<%@page import="community.CommuinityDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -11,8 +11,8 @@ String searchStr = "";
 if(searchWord != null)
 	searchStr = "searchField=" + searchField + "&searchWord" + searchWord;
 
-BoardDAO bDao = new BoardDAO();
-BoardDTO bDto = bDao.selectView(board_idx);
+CommuinityDAO bDao = new CommuinityDAO();
+CommunityDTO bDto = bDao.selectView(board_idx);
 pageContext.setAttribute("bDto", bDto);
 
 bDao.close();

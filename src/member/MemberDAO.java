@@ -121,6 +121,7 @@ public class MemberDAO {
 			psmt.setString(1, id);
 			rs = psmt.executeQuery(); rs.next();
 			dto.setName(rs.getString("name"));
+			dto.setAuth(rs.getString("auth"));
 			dto.setId(rs.getString("id"));
 			dto.setPass(rs.getString("pass"));
 			dto.setTel(rs.getString("tel"));

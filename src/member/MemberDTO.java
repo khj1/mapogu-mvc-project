@@ -2,6 +2,7 @@ package member;
 
 public class MemberDTO {
 	private String name; 
+	private String auth; 
 	private String id;
 	private String pass; 
 	private String tel; 
@@ -16,6 +17,12 @@ public class MemberDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getAuth() {
+		return auth;
+	}
+	public void setAuth(String auth) {
+		this.auth = auth;
 	}
 	public String getId() {
 		return id;

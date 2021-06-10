@@ -39,13 +39,8 @@
 				</div>
 				<div>
 
-<form enctype="multipart/form-data" method="post" action="../community/edit.do">
-	<input type="hidden" name="flag" value="data" />
-	<input type="hidden" name="board" value="${board }" />
-	<input type="hidden" name="prevOfile" value="${bDto.ofile }" />
-	<input type="hidden" name="prevSfile" value="${bDto.sfile }" />
-	<input type="hidden" name="board_idx" value="${bDto.board_idx }" />
-	<input type="hidden" name="pageNum" value="${pageNum }" />
+<form enctype="multipart/form-data" method="post" action="../community/write.do">
+	<input type="hidden" name="flag" value="${flag }" />
 	<table class="table table-bordered">
 	<colgroup>
 		<col width="20%"/>
@@ -56,7 +51,7 @@
 			<th class="text-center" 
 				style="vertical-align:middle;">작성자</th>
 			<td>
-				<input name="name" type="text" value="${bDto.name }"
+				<input name="name" type="text" value="${mDto.name }"
 					class="form-control" style="width:100px;" readOnly/>
 			</td>
 		</tr>
@@ -64,7 +59,7 @@
 			<th class="text-center" 
 				style="vertical-align:middle;">이메일</th>
 			<td>
-				<input name="email" type="text" value="${bDto.email }"
+				<input name="email" type="text" value="${mDto.email }"
 					class="form-control" style="width:400px;" readOnly/>
 			</td>
 		</tr>
@@ -72,32 +67,29 @@
 			<th class="text-center" 
 				style="vertical-align:middle;">패스워드</th>
 			<td>
-				<input name="pass" type="password" 
-					class="form-control" style="width:200px;" />
+				<input name="pass" type="password" class="form-control" 
+					style="width:200px;" />
 			</td>
 		</tr>
 		<tr>
 			<th class="text-center" 
 				style="vertical-align:middle;">제목</th>
 			<td>
-				<input name="title" type="text" class="form-control" value="${bDto.title }"/>
+				<input name="title" type="text" class="form-control" />
 			</td>
 		</tr>
 		<tr>
 			<th class="text-center" 
 				style="vertical-align:middle;">내용</th>
 			<td>
-				<textarea name="content" rows="10" class="form-control">${bDto.content }</textarea>
+				<textarea name="content" rows="10" class="form-control"></textarea>
 			</td>
 		</tr>
 		<tr>
 			<th class="text-center" 
 				style="vertical-align:middle;">첨부파일</th>
 			<td>
-				<c:if test="${not empty bDto.ofile }">
-					이미 첨부된 파일이 있습니다. 파일을 새로 첨부하면 기존 파일은 제거됩니다.
-				</c:if>
-				<input name="ofile" type="file" class="form-control"/>
+				<input name="ofile" type="file" class="form-control" />
 			</td>
 		</tr>
 	</tbody>
@@ -105,8 +97,10 @@
 	
 	<div class="row text-center" style="">
 		<!-- 각종 버튼 부분 -->
-		<button type="submit" class="btn btn-danger">수정하기</button>
-		<button type="button" class="btn" onclick="history.back();">취소하기</button>
+		
+		<button type="submit" class="btn btn-danger">글쓰기</button>
+		<button type="button" class="btn btn-warning" 
+			onclick="location.href='list.do?flag=${flag}';">취소하기</button>
 	</div>
 </form> 
 

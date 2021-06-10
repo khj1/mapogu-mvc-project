@@ -3,7 +3,7 @@
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ include file="../include/global_head.jsp" %>
-<%! String flag = "notice"; %>
+<%!String flag = "notice";%>
 <%@ include file="./common/list_include.jsp" %>
  <body>
 	<center>

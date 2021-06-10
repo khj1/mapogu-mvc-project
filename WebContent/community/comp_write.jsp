@@ -34,14 +34,13 @@
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/community/sub01_title.gif" alt="직원자료실" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;직원자료실<p> 
+					<img src="../images/community/sub02_title.gif" alt="보호자 게시판" class="con_title" />
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;보호자 게시판<p> 
 				</div>
 				<div>
 
 <form enctype="multipart/form-data" method="post" action="../community/write.do">
-	<input type="hidden" name="board" value="sub01" />
-	<input type="hidden" name="flag" value="data" />
+	<input type="hidden" name="flag" value="${flag }" />
 	<table class="table table-bordered">
 	<colgroup>
 		<col width="20%"/>
@@ -99,10 +98,9 @@
 	<div class="row text-center" style="">
 		<!-- 각종 버튼 부분 -->
 		
-		<button type="submit" class="btn btn-danger">전송하기</button>
-		<button type="reset" class="btn">Reset</button>
+		<button type="submit" class="btn btn-danger">글쓰기</button>
 		<button type="button" class="btn btn-warning" 
-			onclick="location.href='list.do?flag=data&board=sub01';">리스트보기</button>
+			onclick="location.href='list.do?flag=${flag}';">취소하기</button>
 	</div>
 </form> 
 

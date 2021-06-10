@@ -8,8 +8,8 @@
 </object> -->
 <img src="../images/menu/1.jpg" alt="" usemap="#LNB"/>
 <map name="LNB">
-	<area shape="rect" alt="" title="" coords="10,9,134,44" href="../community/list.do?flag=data&board=sub01" target="" />
-	<area shape="rect" alt="" title="" coords="10,48,134,86" href="../community/list.do?flag=comp&board=sub02"" target="" />
+	<area shape="rect" alt="" title="" coords="10,9,134,44" href="../community/list.do?flag=data" target="" />
+	<area shape="rect" alt="" title="" coords="10,48,134,86" href="../community/list.do?flag=comp" target="" />
 </map>
 <!-- <ul>
 	<li><a href="../community/sub01.jsp">메뉴1</a></li>

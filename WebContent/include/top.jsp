@@ -23,9 +23,9 @@
 		<area shape="rect" alt="" title="" coords="0,0,80,33" href="../center/sub01.jsp" target="" />
 		<area shape="rect" alt="" title="" coords="86,0,188,33" href="../business/sub01.jsp" target="" />
 		<area shape="rect" alt="" title="" coords="193,0,316,33" href="../product/sub01.jsp" target="" />
-		<area shape="rect" alt="" title="" coords="321,0,420,33" href="../market/sub01.jsp" target="" />
+		<area shape="rect" alt="" title="" coords="321,0,420,33" href="../market/list.do?flag=suamil" target="" />
 		<area shape="rect" alt="" title="" coords="428,0,529,33" href="../space/sub01.jsp" target="" />
-		<area shape="rect" alt="" title="" coords="536,0,638,33" href="../community/list.do?flag=data&board=sub01" target="" />
+		<area shape="rect" alt="" title="" coords="536,0,638,33" href="../community/list.do?flag=data" target="" />
 		<area shape="rect" alt="" title="" coords="641,0,749,33" href="../volunteer/sub01.jsp" target="" />
 	</map>
 	

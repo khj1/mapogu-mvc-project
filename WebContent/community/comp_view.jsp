@@ -7,18 +7,18 @@
 <script>
 	$(function(){
 		$("#edit").click(function(){
-			location.href="../community/edit.do?board_idx=${dto.board_idx}&pageNum=${pageNum}&board=sub01";
+			location.href="../community/edit.do?flag=${flag}&board_idx=${dto.board_idx}&pageNum=${pageNum}";
 		});
 		$("#delete").click(function(){
 			if(confirm("게시물을 삭제하시겠습니까?"))
-				location.href="../community/delete.do?board_idx=${dto.board_idx}&board=sub01";
+				location.href="../community/delete.do?flag=${flag}&board_idx=${dto.board_idx}";
 		});
 		$("#list").click(function(){
 			if(${not empty searchStr}){
-				location.href="../community/list.do?board_idx=${dto.board_idx}&pageNum=${pageNum}&${searchStr}&board=${board}&flag=${flag}";
+				location.href="../community/list.do?flag=${flag}&board_idx=${dto.board_idx}&pageNum=${pageNum}&${searchStr}";
 			}
 			else{
-				location.href="../community/list.do?board_idx=${dto.board_idx}&pageNum=${pageNum}&board=${board}&flag=${flag}";
+				location.href="../community/list.do?flag=${flag}&board_idx=${dto.board_idx}&pageNum=${pageNum}";
 			}
 		});
 	});
@@ -36,8 +36,8 @@
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/community/sub01_title.gif" alt="직원자료실" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;직원자료실<p> 
+					<img src="../images/community/sub02_title.gif" alt="보호자 게시판" class="con_title" />
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;보호자 게시판<p> 
 				</div>
 				<div>
 

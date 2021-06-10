@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import board.BoardDAO;
-import board.BoardDTO;
+import community.CommuinityDAO;
+import community.CommunityDTO;
 import member.MemberDAO;
 import member.MemberDTO;
 import utils.CookieManager;
@@ -44,10 +44,10 @@ public class MainController extends HttpServlet{
 		
 		
 		// 게시물 미리보기 기능
-		BoardDAO bDao = new BoardDAO();
-		List<BoardDTO> noticeList = bDao.previewList("notice");
-		List<BoardDTO> freeList = bDao.previewList("free");
-		List<BoardDTO> photoList = bDao.previewList("photo");
+		CommuinityDAO bDao = new CommuinityDAO();
+		List<CommunityDTO> noticeList = bDao.previewList("notice");
+		List<CommunityDTO> freeList = bDao.previewList("free");
+		List<CommunityDTO> photoList = bDao.previewList("photo");
 		
 		req.setAttribute("noticeList", noticeList);
 		req.setAttribute("freeList", freeList);

@@ -1,8 +1,33 @@
+<%@page import="utils.FormatFunc"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/global_head.jsp" %>
-
-
+<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<style>
+	th{text-align: center;}
+	#productImg{width: 70px; height: 50px;}
+	input[type='number']{width: 30px;}
+</style>
+<script>
+	$(function(){
+		var total = 0;
+		$("input[name='hiddenTotal']").each(function(){
+			total += parseInt($(this).val());
+		});
+		var total = moneyFormat(total) + "원";
+		$("#sum").html(total);
+		$("#payment").html(total);
+		
+		$("input[type='number']").bind('mouseup', function(){
+			$.ajax({
+				
+			});
+		});
+	});
+	function moneyFormat(price) {
+	    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
+</script>
  <body>
 	<center>
 	<div id="wrap">
@@ -46,31 +71,35 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><input type="checkbox" name="" value="" /></td>
-							<td><img src="../images/market/cake_img1.jpg" /></td>
-							<td>녹차 쌀 무스케잌</td>
-							<td>30,000원</td>
-							<td><img src="../images/market/j_icon.gif" />&nbsp;300원</td>
-							<td><input type="text" name="" value="2" class="basket_num" />&nbsp;<a href=""><img src="../images/market/m_btn.gif" /></a></td>
-							<td>무료배송</td>
-							<td>[조건]</td>
-							<td><span>60,000원<span></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="" value="" /></td>
-							<td><img src="../images/market/cake_img1.jpg" /></td>
-							<td>녹차 쌀 무스케잌</td>
-							<td>30,000원</td>
-							<td><img src="../images/market/j_icon.gif" />&nbsp;300원</td>
-							<td><input type="text" name="" value="2" class="basket_num" />&nbsp;<a href=""><img src="../images/market/m_btn.gif" /></a></td>
-							<td>무료배송</td>
-							<td>[조건]</td>
-							<td><span>60,000원<span></td>
-						</tr>
+						<c:choose>
+							<c:when test="${empty basketList }">
+								<tr>
+									<td colspan="9">장바구니가 비었습니다.</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<c:forEach items="${basketList }" var="basket">
+									<input type="hidden" name ="hiddenTotal" value="${basket.price * basket.amount }" />
+									<tr>
+										<td><input type="checkbox" name="check" value="Y" /></td>
+										<td><img id="productImg" src="../uploads/${basket.sfile }" /></td>
+										<td>${basket.product_name }</td>
+										<td>${FormatFunc.moneyFormat(basket.price) }원</td>
+										<td><img src="../images/market/j_icon.gif" />&nbsp;${FormatFunc.moneyFormat(basket.reserves) }원</td>
+										<td><input type="number" id="${ }" min="1" max="${basket.stock }" value="1" class="basket_num" /></td>
+										<td>무료배송</td>
+										<td>[조건]</td>
+										<td><span id="totalPrice">${FormatFunc.moneyFormat(basket.price * basket.amount) }원</span></td>
+									</tr>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
 					</tbody>
 				</table>
-				<p class="basket_text">[ 기본 배송 ] <span>상품구매금액</span> 137,000 + <span>배송비</span> 0 = 합계 : <span class="money">137,000원</span><br /><br /><a href=""><img src="../images/market/basket_btn01.gif" /></a>&nbsp;<a href="basket02.jsp"><img src="../images/market/basket_btn02.gif" /></a></p>
+				<p class="basket_text">
+					[ 기본 배송 ] <span>상품구매금액</span>&nbsp;<span id="sum"></span> + <span>배송비</span> 0 = 합계 : <span id="payment" class="money"></span><br /><br />
+					<a href=""><img src="../images/market/basket_btn01.gif" /></a>&nbsp;<a href="basket02.jsp"><img src="../images/market/basket_btn02.gif" /></a>
+				</p>
 			</div>
 		</div>
 		<%@ include file="../include/quick.jsp" %>

@@ -3,7 +3,7 @@
 
 <%@ include file="../include/global_head.jsp" %>
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%! String flag = "photo"; %>
+<%!String flag = "photo";%>
 <style>
 	.photo_wrap{width: 800px;}
 	.photo_list{float: left;}

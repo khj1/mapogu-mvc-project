@@ -1,5 +1,5 @@
 <%@page import="fileupload.FileUtil"%>
-<%@page import="board.BoardDAO"%>
+<%@page import="community.CommuinityDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../../include/isLogin.jsp" %>
@@ -14,7 +14,7 @@ out.clear();
 FileUtil.downloadFile(request, response, "/uploads", sfile, ofile);
 
 // 다운로드 횟수 증가
-BoardDAO dao = new BoardDAO();
+CommuinityDAO dao = new CommuinityDAO();
 dao.updateDownCount(board_idx);
 
 dao.close();

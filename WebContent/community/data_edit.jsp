@@ -34,14 +34,13 @@
 			</div>
 			<div class="right_contents">
 				<div class="top_title">
-					<img src="../images/community/sub02_title.gif" alt="보호자 게시판" class="con_title" />
-					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;보호자 게시판<p> 
+					<img src="../images/community/sub01_title.gif" alt="직원자료실" class="con_title" />
+					<p class="location"><img src="../images/center/house.gif" />&nbsp;&nbsp;커뮤니티&nbsp;>&nbsp;직원자료실<p> 
 				</div>
 				<div>
 
 <form enctype="multipart/form-data" method="post" action="../community/edit.do">
 	<input type="hidden" name="flag" value="${flag }" />
-	<input type="hidden" name="board" value="${board }" />
 	<input type="hidden" name="prevOfile" value="${bDto.ofile }" />
 	<input type="hidden" name="prevSfile" value="${bDto.sfile }" />
 	<input type="hidden" name="board_idx" value="${bDto.board_idx }" />

@@ -200,7 +200,7 @@
 					<c:forEach items="${photoList }" var="photo">
 						<li>
 							<dl>
-								<dt><a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=1"><img src="../uploads/${photo.sfile }" width="90px" height="90px" /></a></dt>
+								<dt><a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=1"><img src="../uploads/${photo.sfile }" style="width: 90px; height: 90px;" /></a></dt>
 								<dd>
 									<a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=1">
 										<c:choose>
