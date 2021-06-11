@@ -7,6 +7,32 @@
 	.productImg{ width: 100px; height: 66.5px;}
 	th{text-align: center;}
 </style>
+<script>
+	$(function(){
+		$("img[name='buy_now']").click(function(){
+			
+		});
+		
+		$("img[name='basket']").click(function(){
+			var wrapper = $(this).closest("tr");
+			if(wrapper.find("input[name='check']").is(":checked")){
+				$.post(
+					"../market/basket.do",
+					{
+						product_idx : wrapper.find("input[name='goods_product_idx']").val(),
+						amount : wrapper.find("input[name='goods_amount']").val()
+					},
+					function(){
+						location.href = "../market/list.do?flag=basket";					
+					}
+				)
+			}
+			else{
+				alert("원하시는 상품을 체크해주세요.")
+			}
+		});
+	});
+</script>
  <body>
 	<center>
 	<div id="wrap">
@@ -50,8 +76,11 @@
 							<c:otherwise>
 								<c:forEach items="${boardList }" var="list" varStatus="loop">
 									<tr>
+										<td style="display: none;">
+											<input type="hidden" name= "goods_product_idx" value="${list.product_idx }"/>
+										</td>
 										<td><!-- 상품선택 -->
-											<input type="checkbox" name="check" value="${list.product_idx }" />
+											<input type="checkbox" name="check" value="Y" />
 										</td>
 										
 										<td><!-- 상품이미지 -->
@@ -71,19 +100,14 @@
 										<td class="p_style">${FormatFunc.moneyFormat(list.price)}원</td>
 										
 										<td><!-- 상품수량 -->
-											<input type="number" name="amount" value="1" min="1" max="${list.stock }" class="n_box" />
+											<input type="number" name="goods_amount" value="1" min="1" max="${list.stock }" class="n_box" />
 										</td>
 										
-										<td><!-- 각종 버튼 -->
-											<!-- 바로구매 -->
-											<a href="">
-												<img src="../images/market/btn01.gif" style="margin-bottom:5px;" />
-											</a><br />
+										<td><!-- 바로구매 -->
+											<img name="buy_now" src="../images/market/btn01.gif" style="margin-bottom:5px; cursor: pointer" />
 											
 											<!-- 장바구니 -->
-											<a href="basket.jsp">
-												<img src="../images/market/btn02.gif" />
-											</a>
+											<img name="basket" src="../images/market/btn02.gif" style="cursor: pointer"/>
 										</td>
 									</tr>
 								</c:forEach>

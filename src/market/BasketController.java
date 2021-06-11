@@ -17,18 +17,18 @@ public class BasketController extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-		
 		if(!Authority.isLogin(resp, session)) return;
+
+		String check = req.getParameter("check");
 		
-		if(req.getMethod().equals("GET"))
-			doGet(req, resp);
-		else if(req.getMethod().equals("POST"))
-			doPost(req, resp);
-		
+		if(check == null)
+			insertGoods(req, resp);
+		else
+			checkGoods(req, resp);
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+	private void insertGoods(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		
 		String user_id = session.getAttribute("user_id").toString();
@@ -52,17 +52,31 @@ public class BasketController extends HttpServlet{
 		BasketDAO bDao = new BasketDAO();
 		
 		int result = 0;
-		if(bDao.checkOverlap(product_idx)) {
-			result = bDao.updateBasket(product_idx, amount);
-		}
-		else {
-			result = bDao.insertBasket(bDto)
-		}
-		int result = bDao.insertBasket(bDto);
+		if(bDao.checkOverlap(product_idx, user_id)) 
+			result = bDao.updateBasket(bDto);
+		else 
+			result = bDao.insertBasket(bDto);
+		
 		if(result == 0) {
 			JSFunction.alertBack(resp, "장바구니에 추가하지 못했습니다.");
 			return;
 		}
 		bDao.close();
+	}
+	
+	
+	private void checkGoods(HttpServletRequest req, HttpServletResponse resp) {
+		HttpSession session = req.getSession();
+		String user_id = session.getAttribute("user_id").toString();
+		String product_idx = req.getParameter("product_idx");
+		String check = req.getParameter("check");
+		
+		BasketDTO bDto = new BasketDTO();
+		bDto.setId(user_id);
+		bDto.setProduct_idx(product_idx);
+		bDto.setBasket_check(check);
+		
+		BasketDAO bDao = new BasketDAO();
+		bDao.updateCheck(bDto);
 	}
 }

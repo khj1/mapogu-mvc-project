@@ -3,11 +3,19 @@ package market;
 public class BasketDTO {
 	private String basket_idx;
 	private String product_idx;
+	private String basket_check;
 	private String id;
 	private int total_price;
 	private int amount;
 	private int total_reserves;
 	
+	
+	public String getBasket_check() {
+		return basket_check;
+	}
+	public void setBasket_check(String basket_check) {
+		this.basket_check = basket_check;
+	}
 	public String getBasket_idx() {
 		return basket_idx;
 	}

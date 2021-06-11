@@ -35,9 +35,10 @@ public class BasketDAO {
 	public int countList(Map<String, Object> map) {
 		int result = 0;
 		try {
-			String query = " SELECT COUNT(*) FROM basket ";
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(query); rs.next();
+			String query = " SELECT COUNT(*) FROM basket where id = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, map.get("user_id").toString());
+			rs = psmt.executeQuery(query); rs.next();
 			result = rs.getInt(1);
 		}
 		catch (Exception e) {
@@ -55,14 +56,10 @@ public class BasketDAO {
 					+ " SELECT B.id, B.amount, P.* "
 					+ " FROM basket B INNER JOIN products P "
 					+ " 	ON B.product_idx = P.product_idx "
-				    + " WHERE id = ? "
-				    + " ORDER BY basket_idx DESC "
-				    + " LIMIT ?, ? ";
+				    + " WHERE id = ? ";
 			
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, map.get("user_id").toString());
-			psmt.setInt(2, Integer.parseInt(map.get("start").toString()));
-			psmt.setInt(3, Integer.parseInt(map.get("pageSize").toString()));
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 				ProductDTO dto = new ProductDTO();
@@ -106,12 +103,13 @@ public class BasketDAO {
 		return result;
 	}
 	
-	public boolean checkOverlap(String product_idx) {
+	public boolean checkOverlap(String product_idx, String user_id) {
 		boolean result = false;
 		try {
-			String query = " SELECT COUNT(*) FROM basket WHERE product_idx = ? ";
+			String query = " SELECT COUNT(*) FROM basket WHERE product_idx = ? AND id = ? ";
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, product_idx);
+			psmt.setString(2, user_id);
 			rs = psmt.executeQuery(); rs.next();
 			if(rs.getInt(1) != 0)
 				result = true;
@@ -124,13 +122,18 @@ public class BasketDAO {
 		return result;
 	}
 	
-	public int updateBasket(String product_idx, int amount) {
+	public int updateBasket(BasketDTO dto) {
 		int result = 0;
 		try {
-			String query = " UPDATE basket SET amount = ? WHERE product_idx = ? ";
+			String query = " UPDATE basket "
+					+ "	SET amount = ?, total_price = ?, total_reserves = ? "
+					+ " WHERE product_idx = ? AND id = ? ";
 			psmt = con.prepareStatement(query);
-			psmt.setInt(1, amount);
-			psmt.setString(2, product_idx);
+			psmt.setInt(1, dto.getAmount());
+			psmt.setInt(2, dto.getTotal_price());
+			psmt.setInt(3, dto.getTotal_reserves());
+			psmt.setString(4, dto.getProduct_idx());
+			psmt.setString(5, dto.getId());
 			result = psmt.executeUpdate();
 			
 		}
@@ -140,6 +143,104 @@ public class BasketDAO {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public List<ProductDTO> buyNowList(String product_idx, String user_id){
+		List<ProductDTO> list = new ArrayList<ProductDTO>();
+		try {
+			String query = ""
+					+ " SELECT B.*, P.sfile, P.price, P.product_name "
+					+ " FROM basket B INNER JOIN products P "
+					+ " 	ON B.product_idx = P.product_idx "
+				    + " WHERE id = ? AND product_idx = ? " ;
+			
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, user_id);
+			psmt.setString(2, product_idx);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				ProductDTO dto = new ProductDTO();
+				dto.setProduct_idx(rs.getString("product_idx"));
+				dto.setProduct_name(rs.getString("product_name"));
+				dto.setId(rs.getString("id"));
+				dto.setAmount(rs.getInt("amount"));
+				dto.setReserves(rs.getInt("reserves"));
+				dto.setPrice(rs.getInt("price"));
+				dto.setSfile(rs.getString("sfile"));
+				dto.setStock(rs.getInt("stock"));
+				list.add(dto);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("장바구니 리스트를 불러오는 중 예외 발생");
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<ProductDTO> buyBasketList(String user_id){
+		List<ProductDTO> list = new ArrayList<ProductDTO>();
+		try {
+			String query = ""
+					+ " SELECT B.*, P.*"
+					+ " FROM basket B INNER JOIN products P "
+					+ " 	ON B.product_idx = P.product_idx "
+				    + " WHERE id = ? AND basket_check = 'Y' " ;
+			
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, user_id);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				ProductDTO dto = new ProductDTO();
+				dto.setProduct_idx(rs.getString("product_idx"));
+				dto.setProduct_name(rs.getString("product_name"));
+				dto.setId(rs.getString("id"));
+				dto.setAmount(rs.getInt("amount"));
+				dto.setReserves(rs.getInt("reserves"));
+				dto.setPrice(rs.getInt("price"));
+				dto.setSfile(rs.getString("sfile"));
+				list.add(dto);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("장바구니 리스트를 불러오는 중 예외 발생");
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public int updateCheck(BasketDTO dto) {
+		int result = 0;
+		try {
+			String query = " UPDATE basket "
+					+ "	SET basket_check = ? "
+					+ " WHERE product_idx = ? AND id = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getBasket_check());
+			psmt.setString(2, dto.getProduct_idx());
+			psmt.setString(3, dto.getId());
+			result = psmt.executeUpdate();
+			
+		}
+		catch (Exception e) {
+			result = 0;
+			System.out.println("장바구니 체크 변경 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public void allCheck(String user_id) {
+		try {
+			String query = " UPDATE basket SET basket_check= 'Y' WHERE id = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, user_id);
+			psmt.executeUpdate();
+		}
+		catch (Exception e) {
+			System.out.println("장바구니 체크 변경 중 예외 발생");
+			e.printStackTrace();
+		}
 	}
 	
 	public void close() {

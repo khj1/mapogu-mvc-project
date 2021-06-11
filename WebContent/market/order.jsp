@@ -1,8 +1,55 @@
+<%@page import="utils.FormatFunc"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/global_head.jsp" %>
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<style>
+	.basket_list th{text-align: center;}
+	.product_img{width: 70px; height: 50px;}
+</style>
+<script>
+	$(function(){
+		//문서가 로드될 때 합계 표시
+		var total = 0;
+		$("input[name='goods_total_price']").each(function(){
+			total += parseInt($(this).val());
+		});
+		$("#hidden_payment").val(total);
+		total = moneyFormat(total) + "원";
+		$("#payment").html(total);
+	
+		$("input[name='isEqual']").click(function(){
+			if($(this).val() == 'Y'){
+				$("input[name='receipt_name']").val($("input[name='order_name']").val());
+				$("input[name='receipt_zipcode']").val($("input[name='order_zipcode']").val());
+				$("input[name='receipt_addr1']").val($("input[name='order_addr1']").val());
+				$("input[name='receipt_addr2']").val($("input[name='order_addr2']").val());
+				$("input[name='receipt_mobile1']").val($("input[name='order_mobile1']").val());
+				$("input[name='receipt_mobile2']").val($("input[name='order_mobile2']").val());
+				$("input[name='receipt_mobile3']").val($("input[name='order_mobile3']").val());
+				$("input[name='receipt_email1']").val($("input[name='order_email1']").val());
+				$("input[name='receipt_email2']").val($("input[name='order_email2']").val());
+			}
+			else{
+				$("input[name='receipt_name']").val("");
+				$("input[name='receipt_zipcode']").val("");
+				$("input[name='receipt_addr1']").val("");
+				$("input[name='receipt_addr2']").val("");
+				$("input[name='receipt_mobile1']").val("");
+				$("input[name='receipt_mobile2']").val("");
+				$("input[name='receipt_mobile3']").val("");
+				$("input[name='receipt_email1']").val("");
+				$("input[name='receipt_email2']").val("");
+			}
+		});
+	});
+	
+	
+	// 화폐 단위로 변환해주는 함수
+	function moneyFormat(price) {
+	    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
+</script>
  <body>
 	<center>
 	<div id="wrap">
@@ -23,52 +70,45 @@
 				<p class="con_tit"><img src="../images/market/basket_title01.gif" /></p>
 				<table cellpadding="0" cellspacing="0" border="0" class="basket_list" style="margin-bottom:50px;">
 					<colgroup>
-						<col width="7%" />
 						<col width="10%" />
 						<col width="*" />
 						<col width="10%" />
-						<col width="8%" />
 						<col width="10%" />
+						<col width="8%" />
 						<col width="10%" />
 						<col width="10%" />
 						<col width="8%" />
 					</colgroup>
 					<thead>
 						<tr>
-							<th>선택</th>
 							<th>이미지</th>
 							<th>상품명</th>
 							<th>판매가</th>
-							<th>적립금</th>
 							<th>수량</th>
+							<th>총 적립금</th>
 							<th>배송구분</th>
 							<th>배송비</th>
 							<th>합계</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><input type="checkbox" name="" value="" /></td>
-							<td><img src="../images/market/cake_img1.jpg" /></td>
-							<td>녹차 쌀 무스케잌</td>
-							<td>30,000원</td>
-							<td><img src="../images/market/j_icon.gif" />&nbsp;300원</td>
-							<td><input type="text" name="" value="2" class="basket_num" />&nbsp;<a href=""><img src="../images/market/m_btn.gif" /></a></td>
-							<td>무료배송</td>
-							<td>[조건]</td>
-							<td><span>60,000원<span></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="" value="" /></td>
-							<td><img src="../images/market/cake_img1.jpg" /></td>
-							<td>녹차 쌀 무스케잌</td>
-							<td>30,000원</td>
-							<td><img src="../images/market/j_icon.gif" />&nbsp;300원</td>
-							<td><input type="text" name="" value="2" class="basket_num" />&nbsp;<a href=""><img src="../images/market/m_btn.gif" /></a></td>
-							<td>무료배송</td>
-							<td>[조건]</td>
-							<td><span>60,000원<span></td>
-						</tr>
+						<c:forEach items="${orderList }" var="order">
+							<tr>
+								<td style="display: none;">
+									<input type="hidden" name ="goods_total_price" value="${order.price * order.amount }" />
+									<input type="hidden" name ="goods_normal_price" value="${order.price }" />
+									<input type="hidden" name ="goods_product_idx" value="${order.product_idx }" />
+								</td>
+								<td><img class ="product_img" src="../uploads/${order.sfile }" /></td>
+								<td>${order.product_name }</td>
+								<td>${FormatFunc.moneyFormat(order.price) }원</td>
+								<td>${order.amount }</td>
+								<td><img src="../images/market/j_icon.gif" />&nbsp;${FormatFunc.moneyFormat(order.amount * order.reserves )}원</td>
+								<td>무료배송</td>
+								<td>[조건]</td>
+								<td><span>${FormatFunc.moneyFormat(order.amount * order.price) }원<span></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 
@@ -76,8 +116,8 @@
 				
 				<!-- 폼값 시작 -->
 				<form action="">
-				<input type="hidden" name="payment" value=""/>
-				<input type="hidden" name="id" value=""/>
+				<input type="hidden" id="hidden_payment" value=""/>
+				<input type="hidden" id="id" value=""/>
 				<table cellpadding="0" cellspacing="0" border="0" class="con_table" style="width:100%;" style="margin-bottom:50px;">
 					<colgroup>
 						<col width="15%" />
@@ -86,22 +126,22 @@
 					<tbody>
 						<tr>
 							<th>성명</th>
-							<td style="text-align:left;"><input type="text" name="order_name"  value="" class="join_input" /></td>
+							<td style="text-align:left;"><input type="text" name="order_name"  value="테스트이름" class="join_input" /></td>
 						</tr>
 						<tr>
 							<th>주소</th>
 							<td style="text-align:left;">
-								<input type="text" name="order_zipcode"  value="" class="join_input" style="width:80px; margin-bottom:5px;" /><a href=""><img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" /></a><br />
-								<input type="text" name="order_addr1"  value="" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br />
-								<input type="text" name="order_addr2"  value="" class="join_input" style="width:300px;" /> 나머지주소</td>
+								<input type="text" name="order_zipcode"  value="12345" class="join_input" style="width:80px; margin-bottom:5px;" /><a href=""><img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" /></a><br />
+								<input type="text" name="order_addr1"  value="테스트주소" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br />
+								<input type="text" name="order_addr2"  value="테스트상세주소" class="join_input" style="width:300px;" /> 나머지주소</td>
 						</tr>
 						<tr>
 							<th>휴대폰</th>
-							<td style="text-align:left;"><input type="text" name="order_mobile1"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile2"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile3"  value="" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;"><input type="text" name="order_mobile1"  value="010" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile2"  value="1234" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile3"  value="5678" class="join_input" style="width:50px;" /></td>
 						</tr>
 						<tr>
 							<th>이메일주소</th>
-							<td style="text-align:left;"><input type="text" name="order_email1"  value="" class="join_input" style="width:100px;" /> @ <input type="text" name="order_email12"  value="" class="join_input" style="width:100px;" /></td>
+							<td style="text-align:left;"><input type="text" name="order_email1"  value="테스트 이메일" class="join_input" style="width:100px;" /> @ <input type="text" name="order_email2"  value="테스트 이메일2" class="join_input" style="width:100px;" /></td>
 						</tr>
 					</tbody>
 				</table>
@@ -158,7 +198,7 @@
 					<tbody>
 						<tr>
 							<th>결제금액</th>
-							<td style="text-align:left;"><span class="money" id="payment">60,000원</span></td>
+							<td style="text-align:left;"><span class="money" id="payment"></span></td>
 						</tr>
 						<tr>
 							<th>결제방식선택</th>

@@ -10,20 +10,96 @@
 </style>
 <script>
 	$(function(){
+		// 문서가 로드될 때 합계 표시
 		var total = 0;
-		$("input[name='hiddenTotal']").each(function(){
+		$("input[name='goods_total_price']").each(function(){
 			total += parseInt($(this).val());
 		});
-		var total = moneyFormat(total) + "원";
+		
+		$("#goods_total_sum").val(total);
+		$("#goods_total_payment").val(total);
+		
+		total = moneyFormat(total) + "원";
 		$("#sum").html(total);
 		$("#payment").html(total);
 		
+		
+		// 문서가 로드될 때 
+		
+		
+		// 수량 변경 시 DB 및 합계 변경
 		$("input[type='number']").bind('mouseup', function(){
-			$.ajax({
-				
+			var wrapper = $(this).closest("tr");
+			var goods_amount = $(this).val();
+			var goods_product_idx = wrapper.find("input[name='goods_product_idx']").val();
+			
+			$.post(
+				"../market/basket.do",
+				{
+					product_idx : goods_product_idx,
+					amount : goods_amount
+				},
+				function(){
+					wrapper.find("input[name='goods_amount']").val(goods_amount)
+					alert("수량이 변경되었습니다.");
+					location.reload();
+				}
+			); 
+		});
+		
+		// 체크 해제 시 합계 변경
+		$("input[type='checkbox'][name='cart']").change(function(){
+			var wrapper = $(this).closest('tr');
+			
+			var goods_product_idx = wrapper.find("input[name='goods_product_idx']").val();
+			var checked_total_price = parseInt(wrapper.find("input[name='goods_total_price']").val());
+			var goods_total_sum = parseInt($("#goods_total_sum").val());
+
+			if($(this).is(":checked")){
+				$.post(
+					"../market/basket.do",
+					{
+						product_idx: goods_product_idx,
+						check: "Y"						
+					}	
+				);
+				goods_total_sum += checked_total_price;
+			}
+			else{
+				$.post(
+					"../market/basket.do",
+					{
+						product_idx: goods_product_idx,
+						check: "N"						
+					}	
+				);
+				goods_total_sum -= checked_total_price;
+			}
+			$("#goods_total_sum").val(goods_total_sum);
+			goods_total_sum = moneyFormat(goods_total_sum) + "원";
+			
+			$("#sum").html(goods_total_sum);
+			$("#payment").html(goods_total_sum);
+		});
+		
+		// 구매 버튼 클릭 시 이벤트 발생
+		$("#buy_now").click(function(){
+			$("input[type='checkbox']:not(:checked)").each(function(){
+				var wrapper = $(this).closest("tr");
+				var goods_product_idx = wrapper.find("input[name='goods_product_idx']").val();
+				$.post(
+					"../market/basket.do",
+					{
+						product_idx: goods_product_idx,
+						check: "N"						
+					}
+				);
 			});
+			location.href = "../market/list.do?flag=order";
 		});
 	});
+	
+	// 화폐 단위로 변환해주는 함수
 	function moneyFormat(price) {
 	    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	}
@@ -79,17 +155,23 @@
 							</c:when>
 							<c:otherwise>
 								<c:forEach items="${basketList }" var="basket">
-									<input type="hidden" name ="hiddenTotal" value="${basket.price * basket.amount }" />
 									<tr>
-										<td><input type="checkbox" name="check" value="Y" /></td>
+										<td style="display: none">
+											<input type="hidden" name ="goods_total_price" value="${basket.price * basket.amount }" />
+											<input type="hidden" name ="goods_normal_price" value="${basket.price }" />
+											<input type="hidden" name ="goods_amount" value="${basket.amount }" />
+											<input type="hidden" name ="goods_product_idx" value="${basket.product_idx }" />
+											<input type="hidden" name ="goods_product_stock" value="${basket.stock}" />
+										</td>
+										<td><input type="checkbox" name="cart" value="Y" checked/></td>
 										<td><img id="productImg" src="../uploads/${basket.sfile }" /></td>
 										<td>${basket.product_name }</td>
 										<td>${FormatFunc.moneyFormat(basket.price) }원</td>
 										<td><img src="../images/market/j_icon.gif" />&nbsp;${FormatFunc.moneyFormat(basket.reserves) }원</td>
-										<td><input type="number" id="${ }" min="1" max="${basket.stock }" value="1" class="basket_num" /></td>
+										<td><input type="number" min="1" max="${basket.stock }" value="${basket.amount }" class="basket_num" /></td>
 										<td>무료배송</td>
 										<td>[조건]</td>
-										<td><span id="totalPrice">${FormatFunc.moneyFormat(basket.price * basket.amount) }원</span></td>
+										<td><span>${FormatFunc.moneyFormat(basket.price * basket.amount) }원</span></td>
 									</tr>
 								</c:forEach>
 							</c:otherwise>
@@ -97,9 +179,18 @@
 					</tbody>
 				</table>
 				<p class="basket_text">
-					[ 기본 배송 ] <span>상품구매금액</span>&nbsp;<span id="sum"></span> + <span>배송비</span> 0 = 합계 : <span id="payment" class="money"></span><br /><br />
-					<a href=""><img src="../images/market/basket_btn01.gif" /></a>&nbsp;<a href="basket02.jsp"><img src="../images/market/basket_btn02.gif" /></a>
+					<input type="hidden" id ="goods_total_sum" value =""/>
+					<input type="hidden" id ="goods_total_payment" value =""/>
+					[ 기본 배송 ] 
+					<span>상품구매금액</span>&nbsp;   <span id="sum"></span> + 
+					<span>배송비</span> 0 = 합계 :    <span id="payment" class="money"></span><br /><br />
+					
+					<!-- 쇼핑 계속하기 버튼 -->
+					<a href="../market/list.do?flag=suamil"><img src="../images/market/basket_btn01.gif" /></a>&nbsp;
+					<!-- 구매 버튼 -->
+					<img id="buy_now" src="../images/market/basket_btn02.gif" />
 				</p>
+				
 			</div>
 		</div>
 		<%@ include file="../include/quick.jsp" %>

@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<style>
+	a:hover{text-decoration: none;}
+	#basket{color: gray; font-size: 0.5em; margin-top: 2px; position: relative; top: 1px;}
+	#basket:hover{color: gray;}
+</style>
 <div id="top" style="border:0px solid #000;"> 
 	<a href="../main/main.do"><img src="../images/logo.gif" alt="마포구립장애인 직업재활센터" id="top_logo" /></a>
 	<ul id="lnb">
@@ -11,6 +16,7 @@
 			<!-- 로그인후 -->
 			<li><a href="../main/logout.do"><img src="../images/lnb05.gif" alt="LOG OUT" /></a></li>
 			<li><a href="../center/sub07.jsp"><img src="../images/lnb06.gif" alt="MODIFY" /></a></li>
+			<li><a href="../market/list.do?flag=basket"><span id="basket">BASKET</span></a></li>
 		<% } %>
 			
 		<li><a href="../member/sitemap.jsp"><img src="../images/lnb03.gif" alt="SITEMAP" /></a></li> 

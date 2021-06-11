@@ -67,14 +67,14 @@ public class BoardPage implements BoardConfig{
 		return pagingStr;
 	}
 	
-	public static String pagingImg2(int totalCount, int pageNum, String reqURI, String queryStr) {
+	public static String pagingImg2(int totalCount, int pageNum, String reqURI, String queryStr, String flag) {
 		
 		String pagingStr = "";
 		int totalPage = (int)Math.ceil((double)totalCount/PAGE_PER_SIZE);
 		int pageTemp = (((pageNum - 1) / PAGE_PER_BLOCK) * PAGE_PER_BLOCK) + 1;
 		if(pageTemp != 1) {
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=1&" + queryStr + "' class='page-link'><i class='fas fa-angle-double-left'></i></a></li>";
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=" + (pageTemp -1) + "&" + queryStr +"' class='page-link'><i class='fas fa-angle-left'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=1&" + queryStr + "' class='page-link'><i class='fas fa-angle-double-left'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=" + (pageTemp -1) + "&" + queryStr +"' class='page-link'><i class='fas fa-angle-left'></i></a></li>";
 		}
 		int blockCount = 1;
 		
@@ -83,27 +83,27 @@ public class BoardPage implements BoardConfig{
 				pagingStr += "&nbsp;<li class='page-item active'><a href='#' class='page-link'>" + pageTemp + "</a></li>&nbsp;";
 			} 
 			else {
-				pagingStr += "&nbsp;<li class='page-item'><a href= '" + reqURI + "?pageNum=" + pageTemp + "&" + queryStr + "'class='page-link'>" + pageTemp + "</i></a></li>&nbsp;"; 
+				pagingStr += "&nbsp;<li class='page-item'><a href= '" + reqURI + "?flag=" + flag + "&pageNum=" + pageTemp + "&" + queryStr + "'class='page-link'>" + pageTemp + "</i></a></li>&nbsp;"; 
 			}
 			pageTemp++;
 			blockCount++;
 		}
 		if(pageTemp <= totalPage) {
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=" + pageTemp + "&" + queryStr + "' class='page-link'><i class='fas fa-angle-right'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=" + pageTemp + "&" + queryStr + "' class='page-link'><i class='fas fa-angle-right'></i></a></li>";
 			pagingStr += "&nbsp;";
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=" + totalPage + "&" + queryStr + "' class='page-link'><i class='fas fa-angle-double-right'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=" + totalPage + "&" + queryStr + "' class='page-link'><i class='fas fa-angle-double-right'></i></a></li>";
 		}
 		return pagingStr;
 	}
 	
-	public static String pagingImg2(int totalCount, int pageNum, String reqURI) {
+	public static String pagingImg2(int totalCount, int pageNum, String reqURI, String flag) {
 		
 		String pagingStr = "";
 		int totalPage = (int)Math.ceil((double)totalCount/PAGE_PER_SIZE);
 		int pageTemp = (((pageNum - 1) / PAGE_PER_BLOCK) * PAGE_PER_BLOCK) + 1;
 		if(pageTemp != 1) {
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=1&' class='page-link'><i class='fas fa-angle-double-left'></i></a></li>";
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=" + (pageTemp -1) + "' class='page-link'><i class='fas fa-angle-left'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=1&' class='page-link'><i class='fas fa-angle-double-left'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=" + (pageTemp -1) + "' class='page-link'><i class='fas fa-angle-left'></i></a></li>";
 		}
 		int blockCount = 1;
 		
@@ -112,15 +112,15 @@ public class BoardPage implements BoardConfig{
 				pagingStr += "&nbsp;<li class='page-item active'><a href='#' class='page-link'>" + pageTemp + "</a></li>&nbsp;";
 			} 
 			else {
-				pagingStr += "&nbsp;<li class='page-item'><a href= '" + reqURI + "?pageNum=" + pageTemp + "'class='page-link'>" + pageTemp + "</i></a></li>&nbsp;"; 
+				pagingStr += "&nbsp;<li class='page-item'><a href= '" + reqURI + "?flag=" + flag + "&pageNum=" + pageTemp + "'class='page-link'>" + pageTemp + "</i></a></li>&nbsp;"; 
 			}
 			pageTemp++;
 			blockCount++;
 		}
 		if(pageTemp <= totalPage) {
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=" + pageTemp + "' class='page-link'><i class='fas fa-angle-right'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=" + pageTemp + "' class='page-link'><i class='fas fa-angle-right'></i></a></li>";
 			pagingStr += "&nbsp;";
-			pagingStr += "<li class='page-item'><a href='" + reqURI + "?pageNum=" + totalPage + "' class='page-link'><i class='fas fa-angle-double-right'></i></a></li>";
+			pagingStr += "<li class='page-item'><a href='" + reqURI + "?flag=" + flag + "&pageNum=" + totalPage + "' class='page-link'><i class='fas fa-angle-double-right'></i></a></li>";
 		}
 		return pagingStr;
 	}

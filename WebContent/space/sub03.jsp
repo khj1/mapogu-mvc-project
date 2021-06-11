@@ -111,7 +111,7 @@
 <div class="row text-center">
 	<!-- 페이지번호 부분 -->
 	<ul class="pagination">
-		<%=BoardPage.pagingImg2(totalCount, pageNum, request.getRequestURI(), searchStr) %>
+		<%=BoardPage.pagingImg2(totalCount, pageNum, request.getRequestURI(), searchStr, flag) %>
 	</ul>	
 </div>
 
