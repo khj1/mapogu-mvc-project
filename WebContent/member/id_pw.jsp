@@ -59,10 +59,8 @@
 					},
 					dataType : "json",
 					success : function(data){
-						alert(data.result);
-						$("#pw_id").val("");
-						$("#pw_name").val("");
-						$("#pw_name").val("");
+						alert(data.msgStr);
+						location.href = data.url;
 					},
 					error : function(data){
 						alert("ERROR: " + data.status + ":" + data.statusText);

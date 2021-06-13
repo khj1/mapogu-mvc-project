@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+String[] day = {"일", "월", "화", "수", "목", "금", "토"};
+pageContext.setAttribute("day", day);
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,6 +18,25 @@
 <script src="../bootstrap3.3.7/jquery/jquery-3.6.0.min.js"></script>
 <script>
 	$(function(){
+		$.ajax({
+			url: "../calendar/preview.cal",
+			type: "get",
+			dataType: "json",
+			success: function(data){
+				var html = "";
+				$.each(data, function(index, week){
+					html += "<tr>";
+					$.each(week, function(index, day){
+						html += "<th><a href=''>" + day + "</a></th>";
+					});
+					html += "</tr>";
+				});
+			},
+			error: function(data){
+				alert("ERROR: " + data.status + ":" + data.statusText);
+			}
+		});
+		
 		$("form").submit(function(){
 			if(!$("input[name='user_id']").val()){
 				alert("아이디를 입력해주세요.");
@@ -118,7 +141,7 @@
 					</table>
 				</div>
 				<div class="cal_bottom">
-					<table cellpadding="0" cellspacing="0" border="0" class="calendar">
+					<table id="calendar" cellpadding="0" cellspacing="0" border="0" class="calendar">
 						<colgroup>
 							<col width="14%" />
 							<col width="14%" />
@@ -136,60 +159,6 @@
 							<th><img src="../images/day05.gif" alt="T" /></th>
 							<th><img src="../images/day06.gif" alt="F" /></th>
 							<th><img src="../images/day07.gif" alt="S" /></th>
-						</tr>
-						<tr>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">1</a></td>
-							<td><a href="">2</a></td>
-							<td><a href="">3</a></td>
-						</tr>
-						<tr>
-							<td><a href="">4</a></td>
-							<td><a href="">5</a></td>
-							<td><a href="">6</a></td>
-							<td><a href="">7</a></td>
-							<td><a href="">8</a></td>
-							<td><a href="">9</a></td>
-							<td><a href="">10</a></td>
-						</tr>
-						<tr>
-							<td><a href="">11</a></td>
-							<td><a href="">12</a></td>
-							<td><a href="">13</a></td>
-							<td><a href="">14</a></td>
-							<td><a href="">15</a></td>
-							<td><a href="">16</a></td>
-							<td><a href="">17</a></td>
-						</tr>
-						<tr>
-							<td><a href="">18</a></td>
-							<td><a href="">19</a></td>
-							<td><a href="">20</a></td>
-							<td><a href="">21</a></td>
-							<td><a href="">22</a></td>
-							<td><a href="">23</a></td>
-							<td><a href="">24</a></td>
-						</tr>
-						<tr>
-							<td><a href="">25</a></td>
-							<td><a href="">26</a></td>
-							<td><a href="">27</a></td>
-							<td><a href="">28</a></td>
-							<td><a href="">29</a></td>
-							<td><a href="">30</a></td>
-							<td><a href="">31</a></td>
-						</tr>
-						<tr>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
-							<td><a href="">&nbsp;</a></td>
 						</tr>
 					</table>
 				</div>

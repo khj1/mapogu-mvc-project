@@ -27,7 +27,7 @@ public class ListController extends HttpServlet{
 			if(!Authority.isLogin(resp, session)) return;
 			basketList(req, resp);
 		}
-		else if(flag.equals("order")) {
+		else if(flag.contains("order")) {
 			if(!Authority.isLogin(resp, session)) return;
 			orderList(req, resp);
 		}
@@ -92,7 +92,7 @@ public class ListController extends HttpServlet{
 		
 		int totalCount = bDao.countList(map);
 		
-		bDao.allCheck(user_id);
+		bDao.updateCheckAll(user_id, "Y");
 		List<ProductDTO> basketList = bDao.showBasket(map);
 
 		req.setAttribute("basketList", basketList);
@@ -103,28 +103,55 @@ public class ListController extends HttpServlet{
 	}
 	
 	private void orderList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		String flag = req.getParameter("flag");
+		String product_idx = req.getParameter("product_idx");
+		
 		HttpSession session = req.getSession();
 		String user_id = session.getAttribute("user_id").toString();
-		String product_idx = req.getParameter("product_idx");
 		
 		List<ProductDTO> orderList = null;
 		BasketDAO bDao = new BasketDAO();
-		if(product_idx != null)
-			orderList = bDao.buyNowList(user_id, product_idx);
-		else
+		
+		// 바로 주문 버튼을 통해 해당 상품만 구매할 때
+		if(product_idx != null) {
+			BasketDTO bDto = new BasketDTO();
+			bDto.setId(user_id);
+			bDto.setProduct_idx(product_idx);
+			bDto.setBasket_check("Y");
+			
+			bDao.updateCheckAll(user_id, "N");
+			bDao.updateCheck(bDto);
 			orderList = bDao.buyBasketList(user_id);
+		}
 		
-		bDao.close();
-		
-		/* 회원정보로 주문자 정보 설정하기
-		 * 
-		 * MemberDAO mDao = new MemberDAO(); MemberDTO mDto =
-		 * mDao.getMemberInfo(user_id); mDao.close();
-		 * 
-		 * req.setAttribute("mDto", mDto);
-		 */
-		
+		// 장바구니에 있는 상품을 구매할 때
+		// 주문 후 주문한 상품 내역을 출력할 때
+		else {
+			orderList = bDao.buyBasketList(user_id);
+		}
 		req.setAttribute("orderList", orderList);
-		req.getRequestDispatcher("/market/order.jsp").forward(req, resp);
+	    
+		
+		// 주문 완료 페이지
+		if(flag.equals("order")) {
+			MemberDAO mDao = new MemberDAO(); 
+			MemberDTO mDto = mDao.getMemberInfo(user_id); 
+			bDao.close();
+			mDao.close();
+			
+			req.setAttribute("mDto", mDto);
+			req.getRequestDispatcher("/market/order.jsp").forward(req, resp);
+		}
+		
+		// 주문 준비 페이지
+		else if(flag.equals("order_complete")){
+			bDao.deleteBasket(user_id);
+			bDao.close();
+			
+			OrderDAO oDao = new OrderDAO();
+			OrderDTO oDto = oDao.getLatestOrderInfo(user_id);
+			req.setAttribute("oDto", oDto);
+			req.getRequestDispatcher("/market/order_complete.jsp").forward(req, resp);
+		}
 	}
 }

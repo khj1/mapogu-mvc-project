@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import community.CommuinityDAO;
 import community.CommunityDTO;
 import member.MemberDAO;
 import member.MemberDTO;
+import utils.CalendarPrint;
 import utils.CookieManager;
 
 @WebServlet("/main/main.do") 
@@ -49,9 +51,14 @@ public class MainController extends HttpServlet{
 		List<CommunityDTO> freeList = bDao.previewList("free");
 		List<CommunityDTO> photoList = bDao.previewList("photo");
 		
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = Calendar.getInstance().get(Calendar.MONTH);
+		
 		req.setAttribute("noticeList", noticeList);
 		req.setAttribute("freeList", freeList);
 		req.setAttribute("photoList", photoList);
+		req.setAttribute("year", year);
+		req.setAttribute("month", month);
 		
 		req.getRequestDispatcher("/main/main.jsp").forward(req, resp);
 	}

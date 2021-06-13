@@ -14,10 +14,11 @@
 		$("input[name='goods_total_price']").each(function(){
 			total += parseInt($(this).val());
 		});
-		$("#hidden_payment").val(total);
+		$("input[name='hidden_total_price']").val(total);
 		total = moneyFormat(total) + "원";
 		$("#payment").html(total);
 	
+		//주문자 정보를 배송지 정보에 그대로 입력
 		$("input[name='isEqual']").click(function(){
 			if($(this).val() == 'Y'){
 				$("input[name='receipt_name']").val($("input[name='order_name']").val());
@@ -42,8 +43,104 @@
 				$("input[name='receipt_email2']").val("");
 			}
 		});
+		
+		// 결제하기 버튼을 눌렀을 때
+		$("#orderFrm").submit(function(){
+			var order_name = $("input[name = 'order_name']");
+			var order_zipcode = $("input[name = 'order_zipcode']");
+			var order_addr1 = $("input[name = 'order_addr1']");
+			var order_addr2 = $("input[name = 'order_addr2']");
+			var order_mobile1 = $("input[name = 'order_mobile1']");
+			var order_mobile2 = $("input[name = 'order_mobile2']");
+			var order_mobile3 = $("input[name = 'order_mobile3']");
+			var order_email1 = $("input[name = 'order_email1']");
+			var order_email2 = $("input[name = 'order_email2']");
+			var receipt_name = $("input[name = 'receipt_name']");
+			var receipt_zipcode = $("input[name = 'receipt_zipcode']");
+			var receipt_addr1 = $("input[name = 'receipt_addr1']");
+			var receipt_addr2 = $("input[name = 'receipt_addr2']");
+			var receipt_mobile1 = $("input[name = 'receipt_mobile1']");
+			var receipt_mobile2 = $("input[name = 'receipt_mobile2']");
+			var receipt_mobile3 = $("input[name = 'receipt_mobile3']");
+			var receipt_email1 = $("input[name = 'receipt_email1']");
+			var receipt_email2 = $("input[name = 'receipt_email2']");
+			
+			if(!order_name.val()){
+				alert("주문자의 이름을 입력해주세요.");
+				order_name.focus();
+				return false;
+			}
+			if(!order_zipcode.val()){
+				alert("주문자의 주소를 입력해주세요.");
+				order_zipcode.focus();
+				return false;
+			}
+			if(!order_addr1.val()){
+				alert("주문자의 주소를 입력해주세요.");
+				order_addr1.focus();
+				return false;
+			}
+			if(!order_mobile1.val()){
+				alert("주문자의 휴대전화 번호를 입력해주세요.");
+				order_mobile1.focus();
+				return false;
+			}
+			if(!order_mobile2.val()){
+				alert("주문자의 휴대전화 번호를 입력해주세요.");
+				order_mobile2.focus();
+				return false;
+			}
+			if(!order_mobile3.val()){
+				alert("주문자의 휴대전화 번호를 입력해주세요.");
+				order_mobile3.focus();
+				return false;
+			}
+			if(!receipt_name.val()){
+				alert("수령인의 이름을 입력해주세요.");
+				receipt_name.focus();
+				return false;
+			}
+			if(!receipt_zipcode.val()){
+				alert("수령인의 주소를 입력해주세요.");
+				receipt_zipcode.focus();
+				return false;
+			}
+			if(!receipt_addr1.val()){
+				alert("배송지 주소를 입력해주세요.");
+				receipt_addr1.focus();
+				return false;
+			}
+			if(!receipt_mobile1.val()){
+				alert("수령인의 휴대전화 번호를 입력해주세요.");
+				receipt_mobile1.focus();
+				return false;
+			}
+			if(!receipt_mobile2.val()){
+				alert(" 수령인의 휴대전화 번호를 입력해주세요.");
+				receipt_mobile2.focus();
+				return false;
+			}
+			if(!receipt_mobile3.val()){
+				alert("수령인의 휴대전화 번호를 입력해주세요.");
+				receipt_mobile3.focus();
+				return false;
+			}
+			if(!receipt_email1.val()){
+				alert("수령인의 이메일을 입력해주세요.");
+				receipt_email1.focus();
+				return false;
+			}
+			if(!receipt_email2.val()){
+				alert("수령인의 이메일을 입력해주세요.");
+				receipt_email2.focus();
+				return false;
+			}
+			if(!$("input[type='radio'][name='payment_type']").is(":checked")){
+				alert("결제 방식을 선택해주세요.");
+				return false;
+			}
+		});
 	});
-	
 	
 	// 화폐 단위로 변환해주는 함수
 	function moneyFormat(price) {
@@ -115,9 +212,8 @@
 				<p class="con_tit"><img src="../images/market/basket_title02.gif" /></p>
 				
 				<!-- 폼값 시작 -->
-				<form action="">
-				<input type="hidden" id="hidden_payment" value=""/>
-				<input type="hidden" id="id" value=""/>
+				<form id ="orderFrm" action="../market/order.do" method="post">
+				<input type="hidden" name="hidden_total_price" value=""/>
 				<table cellpadding="0" cellspacing="0" border="0" class="con_table" style="width:100%;" style="margin-bottom:50px;">
 					<colgroup>
 						<col width="15%" />
@@ -126,22 +222,22 @@
 					<tbody>
 						<tr>
 							<th>성명</th>
-							<td style="text-align:left;"><input type="text" name="order_name"  value="테스트이름" class="join_input" /></td>
+							<td style="text-align:left;"><input type="text" name="order_name"  value="${mDto.name }" class="join_input" /></td>
 						</tr>
 						<tr>
 							<th>주소</th>
 							<td style="text-align:left;">
-								<input type="text" name="order_zipcode"  value="12345" class="join_input" style="width:80px; margin-bottom:5px;" /><a href=""><img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" /></a><br />
-								<input type="text" name="order_addr1"  value="테스트주소" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br />
-								<input type="text" name="order_addr2"  value="테스트상세주소" class="join_input" style="width:300px;" /> 나머지주소</td>
+								<input type="text" name="order_zipcode"  value="${mDto.address.substring(0, 5)}" class="join_input" style="width:80px; margin-bottom:5px;" /><a href=""><img src="../images/market/basket_btn03.gif" style="margin-bottom:5px;" /></a><br />
+								<input type="text" name="order_addr1"  value="${mDto.address.substring(6)}" class="join_input" style="width:300px; margin-bottom:5px;" /> 기본주소<br />
+								<input type="text" name="order_addr2"  value="" class="join_input" style="width:300px;" /> 나머지주소</td>
 						</tr>
 						<tr>
 							<th>휴대폰</th>
-							<td style="text-align:left;"><input type="text" name="order_mobile1"  value="010" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile2"  value="1234" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile3"  value="5678" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;"><input type="text" name="order_mobile1"  value="${mDto.mobile.split('-')[0] }" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile2"  value="${mDto.mobile.split('-')[1] }" class="join_input" style="width:50px;" /> - <input type="text" name="order_mobile3"  value="${mDto.mobile.split('-')[2] }" class="join_input" style="width:50px;" /></td>
 						</tr>
 						<tr>
 							<th>이메일주소</th>
-							<td style="text-align:left;"><input type="text" name="order_email1"  value="테스트 이메일" class="join_input" style="width:100px;" /> @ <input type="text" name="order_email2"  value="테스트 이메일2" class="join_input" style="width:100px;" /></td>
+							<td style="text-align:left;"><input type="text" name="order_email1"  value="${mDto.email.split('@')[0] }" class="join_input" style="width:100px;" /> @ <input type="text" name="order_email2"  value="${mDto.email.split('@')[1] }" class="join_input" style="width:100px;" /></td>
 						</tr>
 					</tbody>
 				</table>
@@ -203,14 +299,14 @@
 						<tr>
 							<th>결제방식선택</th>
 							<td style="text-align:left;">
-								<input type="radio" value="card"/> 카드결제&nbsp;&nbsp;&nbsp;
-								<input type="radio" value="without"/> 무통장입금&nbsp;&nbsp;&nbsp;
-								<input type="radio" value="transfer"/> 실시간 계좌이체&nbsp;&nbsp;&nbsp;
-								<input type="radio" value="kakao"/> 카카오페이</td>
+								<input type="radio" name="payment_type" value="card"/> 카드결제&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="payment_type" value="without"/> 무통장입금&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="payment_type" value="transfer"/> 실시간 계좌이체&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="payment_type" value="kakao"/> 카카오페이</td>
 						</tr>
 					</tbody>
 				</table>
-				<p style="text-align:right;"><a href=""><img src="../images/market/basket_btn04.gif" /></a></p>
+				<p style="text-align:right;"><input type="image" id="pay" src="../images/market/basket_btn04.gif"/></p>
 				</form>
 				<!-- 폼값 끝 -->
 				

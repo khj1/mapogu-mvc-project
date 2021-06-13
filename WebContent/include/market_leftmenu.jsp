@@ -10,9 +10,9 @@
 <map name="LNB">
 	<area shape="rect" alt="" title="" coords="10,9,134,44" href="../market/list.do?flag=suamil" target="" />
 	<area shape="rect" alt="" title="" coords="10,48,134,86" href="../market/sub02.jsp" target="" />
-	<area shape="rect" alt="" title="" coords="10,90,134,125" href="../market/clean.jsp" target="" />
+	<area shape="rect" alt="" title="" coords="10,90,134,125" href="../market/clean.req" target="" />
 	<area shape="rect" alt="" title="" coords="10,132,134,166" href="../market/sub04.jsp" target="" />
-	<area shape="rect" alt="" title="" coords="10,172,134,207" href="../market/field.jsp" target="" />
+	<area shape="rect" alt="" title="" coords="10,172,134,207" href="../market/field.req" target="" />
 </map>
 <!-- <ul>
 	<li><a href="../market/sub01.jsp">메뉴1</a></li>

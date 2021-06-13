@@ -31,7 +31,16 @@
 		});
 		
 		$("#buyBtn").click(function(){
-			
+			$.post(
+				"../market/basket.do",
+				{
+					product_idx : ${dto.product_idx},
+					amount : $("#amount").val()
+				},
+				function(){
+					location.href = "../market/list.do?flag=order&product_idx=" + ${dto.product_idx};					
+				}
+			)
 		});
 		
 	});

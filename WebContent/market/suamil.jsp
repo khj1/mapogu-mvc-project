@@ -10,17 +10,38 @@
 <script>
 	$(function(){
 		$("img[name='buy_now']").click(function(){
-			
-		});
-		
-		$("img[name='basket']").click(function(){
 			var wrapper = $(this).closest("tr");
+			var product_idx = wrapper.find("input[name='goods_product_idx']").val();
+			var amount = wrapper.find("input[name='goods_amount']").val();
+			
 			if(wrapper.find("input[name='check']").is(":checked")){
 				$.post(
 					"../market/basket.do",
 					{
-						product_idx : wrapper.find("input[name='goods_product_idx']").val(),
-						amount : wrapper.find("input[name='goods_amount']").val()
+						product_idx : product_idx,
+						amount : amount
+					},
+					function(){
+						location.href = "../market/list.do?flag=order&product_idx=" + product_idx;					
+					}
+				)
+			}
+			else{
+				alert("원하시는 상품을 체크해주세요.")
+			}
+		});
+		
+		$("img[name='basket']").click(function(){
+			var wrapper = $(this).closest("tr");
+			var product_idx = wrapper.find("input[name='goods_product_idx']").val();
+			var amount = wrapper.find("input[name='goods_amount']").val();
+			
+			if(wrapper.find("input[name='check']").is(":checked")){
+				$.post(
+					"../market/basket.do",
+					{
+						product_idx : product_idx,
+						amount : amount
 					},
 					function(){
 						location.href = "../market/list.do?flag=basket";					

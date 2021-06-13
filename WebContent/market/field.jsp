@@ -2,7 +2,151 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/global_head.jsp" %>
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<script>
+$(function(){
+	$("input[name='name']").val("테스트 고객명");
+	$("input[name='tel1']").val("031");
+	$("input[name='tel2']").val("1234");
+	$("input[name='tel3']").val("5678");
+	$("input[name='mobile1']").val("010");
+	$("input[name='mobile2']").val("1234");
+	$("input[name='mobile3']").val("5678");
+	$("input[name='email1']").val("dhepd488");
+	$("input[name='email2']").val("naver.com");
+	$("input[name='cake']").val("테스트 케이크");
+	$("input[name='cookie']").val("테스트 쿠키");
+	$("input[name='reqDate']").val("테스트 희망날짜");
+	$("input[name='etc']").val("테스트 특이사항");
+	
+	$("input[name='isdis']").change(function(){
+		var wrapper = $(this).closest("tr");
+		if($(this).val() == "N"){
+			$("#disType_th").remove();
+			$("#disType_td").remove();
+		}
+		else{
+			var html = "";
+			html += "<th id='disType_th' style='border-bottom:0px;' width='100px'>주요장애유형</th>";
+			html += "<td id='disType_td' style='border-right:0px; border-bottom:0px;'>";
+			html += "<input type='text' name='disType'  value='테스트 내용' class='join_input' />";
+			html += "</td>";
+			wrapper.append(html);
+		}
+	});
+	$("input[name='useDev']").change(function(){
+		var wrapper = $(this).closest("tr");
+		if($(this).val() == "N"){
+			$("#devType_th").remove();
+			$("#devType_td").remove();
+		}
+		else{
+			var html = "";
+			html += "<th id='devType_th' style='border-bottom:0px;' width='100px'>보장구 명</th>";
+			html += "<td id='devType_td' style='border-right:0px; border-bottom:0px;'>";
+			html += "<input type='text' name='devType'  value='테스트 내용' class='join_input' />";
+			html += "</td>";
+			wrapper.append(html);
+		}
+	});
+	
+	// 동적으로 생성된 폼값을 전달하기 위해 on() 메소드를 사용
+	$("#frmBtn").on("click", function(){
+		var name = $("input[name = 'name']");
+		var isdis = $("input[name = 'isdis']");
+		var disType = $("input[name = 'disType']");
+		var useDev = $("input[name = 'useDev']");
+		var devType = $("input[name = 'devType']");
+		var tel1 = $("input[name = 'tel1']");
+		var tel2 = $("input[name = 'tel2']");
+		var tel3 = $("input[name = 'tel3']");
+		var mobile1 = $("input[name = 'mobile1']");
+		var mobile2 = $("input[name = 'mobile2']");
+		var mobile3 = $("input[name = 'mobile3']");
+		var email1 = $("input[name = 'email1']");
+		var email2 = $("input[name = 'email2']");
+		var cake = $("input[name = 'cake']");
+		var cookie = $("input[name = 'cookie']");
+		var reqDate = $("input[name = 'reqDate']");
+		var receiptType = $("input[name = 'receiptType']");
+		
+		if(!name.val()){
+			alert("이름을 입력해주세요.");
+			name.focus();
+		}
+		else if(!isdis.val()){
+			alert("장애 여부를 선택해주세요.");
+			isdis.focus();
+		}
+		else if(!useDev.val()){
+			alert("보장구 사용 여부를 선택해주세요.");
+			useDev.focus();
+		}
+		else if(!tel1.val()){
+			alert("전화번호를 입력해주세요.");
+			tel1.focus();
+		}
+		else if(!tel2.val()){
+			alert("전화번호를 입력해주세요.");
+			tel2.focus();
+		}
+		else if(!tel3.val()){
+			alert("전화번호를 입력해주세요.");
+			tel3.focus();
+		}
+		else if(!mobile1.val()){
+			alert("휴대전화 번호를 입력해주세요.");
+			mobile1.focus();
+		}
+		else if(!mobile2.val()){
+			alert("휴대전화 번호를 입력해주세요.");
+			mobile2.focus();
+		}
+		else if(!mobile3.val()){
+			alert("휴대전화 번호를 입력해주세요.");
+			mobile3.focus();
+		}
+		else if(!email1.val()){
+			alert("이메일을 입력해주세요.");
+			email1.focus();
+		}
+		else if(!email2.val()){
+			alert("이메일을 입력해주세요.");
+			email2.focus();
+		}
+		else if(!cake.val()){
+			alert("케익 체험 내용을 입력해주세요.");
+			cake.focus();
+		}
+		else if(!cookie.val()){
+			alert("쿠키 체험 내용을 입력해주세요.");
+			cookie.focus();
+		}
+		else if(!reqDate.val()){
+			alert("청소 희망 날짜를 입력해주세요.");
+			reqDate.focus();
+		}
+		else if(!receiptType.val()){
+			alert("접수 종류를 선택해주세요.");
+			receiptType.focus();
+		}
+		else{
+			$.ajax({
+				url : "../market/field.req",
+				type : "post",
+				data : $("#frm").serialize(),
+				dataType : "json",
+				success : function(data){
+					alert(data.msg);
+					location.href = data.url;
+				},
+				error : function(data){
+					alert("ERROR: " + data.status + " : " + data.statusText);
+				}
+			});
+		}
+	});
+});
+</script>
  <body>
 	<center>
 	<div id="wrap">
@@ -46,7 +190,7 @@
 				</div>
 				
 				<!-- 폼값 시작 -->
-				<form action="">
+				<form id="frm">
 				<table cellpadding="0" cellspacing="0" border="0" class="con_table" style="width:100%;">
 					<colgroup>
 						<col width="25%" />
@@ -64,11 +208,7 @@
 									<tr>
 										<td style="border-bottom:0px;">
 											<input type="radio" name="isdis"  value="Y" /> 유&nbsp;&nbsp;&nbsp;
-											<input type="radio" name="isdis"  value="N" /> 무
-										</td>
-										<th style="border-bottom:0px;" width="100px">주요장애유형</th>
-										<td style="border-right:0px; border-bottom:0px;">
-											<input type="text" name="disType"  value="" class="join_input" />
+											<input type="radio" name="isdis"  value="N" checked/> 무
 										</td>
 									</tr>
 								</table>
@@ -81,11 +221,7 @@
 									<tr>
 										<td style="border-bottom:0px;">
 											<input type="radio" name="useDev"  value="Y" /> 유&nbsp;&nbsp;&nbsp;
-											<input type="radio" name="useDev"  value="N" /> 무
-										</td>
-										<th style="border-bottom:0px;" width="100px">보장구 명</th>
-										<td style="border-right:0px; border-bottom:0px;">
-											<input type="text" name="typeDev"  value="" class="join_input" />
+											<input type="radio" name="useDev"  value="N" checked/> 무
 										</td>
 									</tr>
 								</table>
@@ -93,11 +229,11 @@
 						</tr>
 						<tr>
 							<th>연락처</th>
-							<td style="text-align:left;"><input type="text" name="tel1"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="tel2"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="tel3"  value="" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;"><input type="text" name="tel1"  value="" maxlength="3" class="join_input" style="width:50px;" /> - <input type="text" name="tel2"  value="" maxlength="4" class="join_input" style="width:50px;" /> - <input type="text" name="tel3"  value=""  maxlength="4" class="join_input" style="width:50px;" /></td>
 						</tr>
 						<tr>
 							<th>담당자 휴대전화</th>
-							<td style="text-align:left;"><input type="text" name="mobile1"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="mobile2"  value="" class="join_input" style="width:50px;" /> - <input type="text" name="mobile3"  value="" class="join_input" style="width:50px;" /></td>
+							<td style="text-align:left;"><input type="text" name="mobile1"  value="" maxlength="3"  class="join_input" style="width:50px;" /> - <input type="text" name="mobile2"  value=""  maxlength="4" class="join_input" style="width:50px;" /> - <input type="text" name="mobile3"  maxlength="4"  value="" class="join_input" style="width:50px;" /></td>
 						</tr>
 						<tr>
 							<th>이메일</th>
@@ -120,12 +256,12 @@
 						</tr>
 						<tr>
 							<th>체험희망날짜</th>
-							<td style="text-align:left;"><input type="text" name="date"  value="" class="join_input" /></td>
+							<td style="text-align:left;"><input type="text" name="reqDate"  value=" class="join_input" /></td>
 						</tr>
 						<tr>
 							<th>접수종류 구분</th>
 							<td style="text-align:left;">
-								<input type="radio" name="receiptType"  value="예약신청" /> 예약신청&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="receiptType"  value="예약신청" checked/> 예약신청&nbsp;&nbsp;&nbsp;
 								<input type="radio" name="receiptType"  value="견적문의" /> 견적문의
 							</td>
 						</tr>
@@ -135,7 +271,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<p style="text-align:center; margin-bottom:40px"><a href=""><img src="../images/btn01.gif" /></a>&nbsp;&nbsp;<a href="#"><img src="../images/btn02.gif" /></a></p>
+				<p style="text-align:center; margin-bottom:40px"><img id="frmBtn" src="../images/btn01.gif" />&nbsp;&nbsp;<a href="../main/main.do"><img src="../images/btn02.gif" /></a></p>
 				</form>
 				<!-- 폼값 끝 -->
 				

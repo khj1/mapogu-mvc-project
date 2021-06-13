@@ -35,10 +35,10 @@ public class BasketDAO {
 	public int countList(Map<String, Object> map) {
 		int result = 0;
 		try {
-			String query = " SELECT COUNT(*) FROM basket where id = ? ";
+			String query = " SELECT COUNT(*) FROM basket WHERE id = ? ";
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, map.get("user_id").toString());
-			rs = psmt.executeQuery(query); rs.next();
+			rs = psmt.executeQuery(); rs.next();
 			result = rs.getInt(1);
 		}
 		catch (Exception e) {
@@ -103,6 +103,39 @@ public class BasketDAO {
 		return result;
 	}
 	
+	// 물품 주문 시 장바구니에서 해당 제품을 제거하는 기능
+	public int deleteBasket(String user_id) {
+		int result = 0;
+		try {
+			String query = " DELETE FROM basket WHERE id = ? AND basket_check = 'Y' ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, user_id);
+			result = psmt.executeUpdate();
+		}
+		catch (Exception e) {
+			System.out.println("장바구니에서 상품 삭제 중 오류 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// 삭제하기 버튼을 통해 장바구니에서 상품을 제거하는 기능
+	public int deleteBasket(String user_id, String product_idx) {
+		int result = 0;
+		try {
+			String query = " DELETE FROM basket WHERE id = ? AND product_idx = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, user_id);
+			psmt.setString(2, product_idx);
+			result = psmt.executeUpdate();
+		}
+		catch (Exception e) {
+			System.out.println("장바구니에서 상품 삭제 중 오류 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public boolean checkOverlap(String product_idx, String user_id) {
 		boolean result = false;
 		try {
@@ -143,39 +176,6 @@ public class BasketDAO {
 			e.printStackTrace();
 		}
 		return result;
-	}
-	
-	public List<ProductDTO> buyNowList(String product_idx, String user_id){
-		List<ProductDTO> list = new ArrayList<ProductDTO>();
-		try {
-			String query = ""
-					+ " SELECT B.*, P.sfile, P.price, P.product_name "
-					+ " FROM basket B INNER JOIN products P "
-					+ " 	ON B.product_idx = P.product_idx "
-				    + " WHERE id = ? AND product_idx = ? " ;
-			
-			psmt = con.prepareStatement(query);
-			psmt.setString(1, user_id);
-			psmt.setString(2, product_idx);
-			rs = psmt.executeQuery();
-			while(rs.next()) {
-				ProductDTO dto = new ProductDTO();
-				dto.setProduct_idx(rs.getString("product_idx"));
-				dto.setProduct_name(rs.getString("product_name"));
-				dto.setId(rs.getString("id"));
-				dto.setAmount(rs.getInt("amount"));
-				dto.setReserves(rs.getInt("reserves"));
-				dto.setPrice(rs.getInt("price"));
-				dto.setSfile(rs.getString("sfile"));
-				dto.setStock(rs.getInt("stock"));
-				list.add(dto);
-			}
-		}
-		catch (Exception e) {
-			System.out.println("장바구니 리스트를 불러오는 중 예외 발생");
-			e.printStackTrace();
-		}
-		return list;
 	}
 	
 	public List<ProductDTO> buyBasketList(String user_id){
@@ -230,11 +230,12 @@ public class BasketDAO {
 		return result;
 	}
 	
-	public void allCheck(String user_id) {
+	public void updateCheckAll(String user_id, String basket_check) {
 		try {
-			String query = " UPDATE basket SET basket_check= 'Y' WHERE id = ? ";
+			String query = " UPDATE basket SET basket_check= ? WHERE id = ? ";
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, user_id);
+			psmt.setString(1, basket_check);
+			psmt.setString(2, user_id);
 			psmt.executeUpdate();
 		}
 		catch (Exception e) {

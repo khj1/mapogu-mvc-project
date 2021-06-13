@@ -186,9 +186,9 @@
 					<span>배송비</span> 0 = 합계 :    <span id="payment" class="money"></span><br /><br />
 					
 					<!-- 쇼핑 계속하기 버튼 -->
-					<a href="../market/list.do?flag=suamil"><img src="../images/market/basket_btn01.gif" /></a>&nbsp;
+					<a href="../market/list.do?flag=suamil"><img src="../images/market/basket_btn01.gif" style="cursor: pointer;"/></a>&nbsp;
 					<!-- 구매 버튼 -->
-					<img id="buy_now" src="../images/market/basket_btn02.gif" />
+					<img id="buy_now" src="../images/market/basket_btn02.gif" style="cursor: pointer;"/>
 				</p>
 				
 			</div>
