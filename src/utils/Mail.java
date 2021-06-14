@@ -95,7 +95,7 @@ public class Mail {
 		sb.append("<li>보장구 명: " + map.get("devType") + "</li>");    
 		sb.append("<li>연락처: " + map.get("tel") + "</li>");    
 		sb.append("<li>담당자 휴대전화: " + map.get("mobile") + "</li>");    
-		sb.append("<li>이메일: " + map.get("mobile") + "</li>");    
+		sb.append("<li>이메일: " + map.get("email") + "</li>");    
 		sb.append("<li>케익체험: " + map.get("cake") + "</li>");    
 		sb.append("<li>쿠키체험: " + map.get("cookie") + "</li>");    
 		sb.append("<li>체험희망날짜: " + map.get("reqDate") + "</li>");    

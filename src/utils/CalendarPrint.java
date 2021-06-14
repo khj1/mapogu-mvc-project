@@ -1,12 +1,10 @@
 package utils;
 
 import java.util.Calendar;
-import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 
 public class CalendarPrint {
-	String[][] calArr = new String[6][7];
 
 	public static String printCalendar(int year, int month){
 		Calendar c = Calendar.getInstance(); //Calendar 객체 생성
@@ -20,11 +18,11 @@ public class CalendarPrint {
 		//일 = 1 월 =2 화 =3 ..
 		c.set(Calendar.DAY_OF_MONTH, 32); //32 이상일땐 마지막 요일로 자동 설정
 		int lastday = 32 - c.get(Calendar.DAY_OF_MONTH);
-		int i =0;
 
 		JSONArray jsonInnerArr = new JSONArray();
 		JSONArray jsonOutterArr = new JSONArray();
 		
+		int i=0;
 		for(;i<dayofweek - 1; i++){
 			jsonInnerArr.add("");
 		}
@@ -36,11 +34,8 @@ public class CalendarPrint {
 			}
 			jsonInnerArr.add(day);
 		}
+		jsonOutterArr.add(jsonInnerArr);
+		
 		return jsonOutterArr.toJSONString();
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(printCalendar(2021, 6));
-	}
-
 }

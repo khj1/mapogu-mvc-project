@@ -4,7 +4,7 @@
 <%@ include file="../include/global_head.jsp" %>
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%!String flag = "photo";%>
-<style>
+<style> 
 	.photo_wrap{width: 800px;}
 	.photo_list{float: left;}
 	.photo_list li{float: left; width:200px; margin-bottom:5px;}
@@ -65,7 +65,7 @@
 			<c:otherwise>
 				<c:forEach items="${boardList }" var="photo">
 					<li>
-						<dl>
+						<dl> 
 							<dt><a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=<%=pageNum%>&<%=searchStr %>"><img src="../uploads/${photo.sfile }" /></a></dt>
 							<dd>
 								<a href="../space/sub04_view.jsp?board_idx=${photo.board_idx }&pageNum=<%=pageNum%>&<%=searchStr %>">
@@ -79,7 +79,7 @@
 										</c:otherwise>
 									</c:choose>
 								</a>
-							</dd>
+							</dd> 
 							<dd>
 								${photo.name}&nbsp;&nbsp;
 								<i class='far fa-calendar-alt' style='font-size:11px'></i> ${photo.postdate.substring(5, 10)}&nbsp;&nbsp;
@@ -92,14 +92,14 @@
 		</c:choose>
 	</ul>
 </div>
-<div class="row text-right" style="padding-right:50px; position: relative; padding-bottom: 20px">
+<div style="width:100% ; float: right; text-align: right;">
 	<!-- 각종 버튼 부분 -->
-	<div style="position: absolute; bottom: 0; right:0;">
+	<div>
 		<button type="button" class="btn btn-default"
 			onclick="location.href='sub04_write.jsp';">글쓰기</button>
 	</div>
-</div>
-<div class="row text-center">
+</div> 
+<div style="width:100% ; float: right; text-align: center">
 	<!-- 페이지번호 부분 -->
 	<ul class="pagination">
 		<%=BoardPage.pagingImg2(totalCount, pageNum, request.getRequestURI(), searchStr, flag) %>

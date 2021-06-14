@@ -134,8 +134,49 @@ public class CommuinityDAO {
 				dto.setSfile(rs.getString("sfile"));
 				dto.setVisitcount(rs.getInt("visitcount"));
 				dto.setDowncount(rs.getInt("downcount"));
-				dto.setLikecount(rs.getInt("likecount"));
-				dto.setHatecount(rs.getInt("hatecount"));
+				list.add(dto);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("게시물을 불러오는 중 예외 발생");
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	// 관리자 모드용 모든 게시물 출력
+	public List<CommunityDTO> selectAllList(String flag){
+		List<CommunityDTO> list = new ArrayList<CommunityDTO>();
+		try {
+			String query = ""
+					+ " SELECT B.*, M.name "
+					+ " FROM multi_board B INNER JOIN membership M "
+					+ " ON B.id = M.id "
+					+ " WHERE flag = ? ";
+			
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, flag);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				CommunityDTO dto = new CommunityDTO();
+				dto.setBoard_idx(rs.getString("board_idx"));
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				
+				//길이가 긴 제목을 문자열 처리
+				String title = rs.getString("title");
+				if(title.length() > 20)
+					title = title.substring(0, 20) + "...";
+				
+				dto.setTitle(title);
+				dto.setContent(rs.getString("content").replaceAll("\r\n", "<br/>"));
+				dto.setPass(rs.getString("pass"));
+				dto.setPostdate(rs.getString("postdate"));
+				dto.setOfile(rs.getString("ofile"));
+				dto.setSfile(rs.getString("sfile"));
+				dto.setVisitcount(rs.getInt("visitcount"));
+				dto.setDowncount(rs.getInt("downcount"));
+				dto.setCaldate(rs.getString("calDate"));
 				list.add(dto);
 			}
 		}
@@ -172,8 +213,7 @@ public class CommuinityDAO {
 				dto.setPass(rs.getString("pass"));
 				dto.setVisitcount(rs.getInt("visitcount"));
 				dto.setDowncount(rs.getInt("downcount"));
-				dto.setLikecount(rs.getInt("likecount"));
-				dto.setHatecount(rs.getInt("hatecount"));
+				dto.setCaldate(rs.getString("calDate"));
 			}
 		}
 		catch(Exception e) {
@@ -250,9 +290,9 @@ public class CommuinityDAO {
 		int result = 0;
 		try {
 			String query = "INSERT INTO multi_board ( "
-					+ " id, title, content, ofile, sfile, pass, flag) "
+					+ " id, title, content, ofile, sfile, pass, flag, calDate) "
 					+ " VALUES ( "
-					+ " ?, ?, ?, ?, ?, ?, ?)";
+					+ " ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s') ";
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getId());
 			psmt.setString(2, dto.getTitle());
@@ -261,6 +301,7 @@ public class CommuinityDAO {
 			psmt.setString(5, dto.getSfile());
 			psmt.setString(6, dto.getPass()); 
 			psmt.setString(7, dto.getFlag());
+			psmt.setString(8, dto.getCaldate());
 			result = psmt.executeUpdate();
 		}
 		catch(Exception e) {

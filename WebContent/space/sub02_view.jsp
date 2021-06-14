@@ -1,7 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ include file="../include/global_head.jsp" %> 
+<%@ include file="../include/isLogin.jsp" %>
+<%@ include file="../include/global_head.jsp" %>
+<%@ include file="./common/view_include.jsp" %>
+<%!String board = "sub02";%>
+<%
+String year = request.getParameter("year");
+String month = request.getParameter("month");
+%>
+ <script>
+	$(function(){
+		$("#list").click(function(){
+			location.href="../space/list.cal?year=<%=year%>&month=<%=month%>";
+		});
+	});
+ </script>
  <body>
 	<center>
 	<div id="wrap">
@@ -33,60 +47,50 @@
 		<th class="text-center" 
 			style="vertical-align:middle;">작성자</th>
 		<td>
-			홍길동
+			${dto.name }
 		</td>
 		<th class="text-center" 
-			style="vertical-align:middle;">작성일</th>
+			style="vertical-align:middle;">날짜</th>
 		<td>
-			2018-01-05
-		</td>
-	</tr>
-	<tr>
-		<th class="text-center" 
-			style="vertical-align:middle;">이메일</th>
-		<td>
-			nakjasabal@naver.com
-		</td>
-		<th class="text-center" 
-			style="vertical-align:middle;">조회수</th>
-		<td>
-			100
+			${dto.caldate }
 		</td>
 	</tr>
 	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">제목</th>
 		<td colspan="3">
-			제목영역입니다.
+			${dto.title }
 		</td>
 	</tr>
 	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">내용</th>
 		<td colspan="3">
-			내용영역입니다<br/>
-			내용영역입니다<br/>
-			내용영역입니다<br/>
-			내용영역입니다<br/>
-			내용영역입니다<br/>
+			${dto.content }
 		</td>
 	</tr>
 	<tr>
 		<th class="text-center" 
 			style="vertical-align:middle;">첨부파일</th>
 		<td colspan="3">
-			파일명.jpg
+			<c:choose>
+				<c:when test="${not empty dto.ofile }">
+					${dto.ofile }
+					<a href="./common/download_process.jsp?ofile=${dto.ofile }&sfile=${dto.sfile}&board_idx=${dto.board_idx}">
+						[다운로드]
+					</a>
+				</c:when>
+				<c:otherwise>
+					없음
+				</c:otherwise>
+			</c:choose>
 		</td>
 	</tr>
 </tbody>
 </table>
 
 <div class="row text-center" style="">
-	<!-- 각종 버튼 부분 -->
-	<button type="button" class="btn btn-primary">수정하기</button>
-	<button type="button" class="btn btn-success">삭제하기</button>	
-	<button type="button" class="btn btn-warning" 
-		onclick="location.href='ListSkin.jsp';">리스트보기</button>
+	<button type="button" class="btn btn-warning" id="list">리스트보기</button>
 </div>
 </form> 
 

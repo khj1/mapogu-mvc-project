@@ -91,9 +91,6 @@
 			<c:choose>
 				<c:when test="${not empty dto.ofile }">
 					${dto.ofile }
-					<a href="./common/download_process.jsp?ofile=${dto.ofile }&sfile=${dto.sfile}&board_idx=${dto.board_idx}">
-						[다운로드]
-					</a>
 				</c:when>
 				<c:otherwise>
 					없음

@@ -9,7 +9,7 @@ public class CleanDTO {
 	private String email; 
 	private String cleanType; 
 	private String acreage; 
-	private String date; 
+	private String reqDate; 
 	private String receiptType; 
 	private String etc;
 	
@@ -61,11 +61,11 @@ public class CleanDTO {
 	public void setAcreage(String acreage) {
 		this.acreage = acreage;
 	}
-	public String getDate() {
-		return date;
+	public String getReqDate() {
+		return reqDate;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setReqDate(String reqDate) {
+		this.reqDate = reqDate;
 	}
 	public String getReceiptType() {
 		return receiptType;

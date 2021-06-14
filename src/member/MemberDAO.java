@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemberDAO {
 	public Connection con;
@@ -113,6 +115,35 @@ public class MemberDAO {
 		return pass;
 	}
 	
+	public List<MemberDTO> getAllMemberInfo() {
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		try {
+			String query = " SELECT * FROM membership "; 
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				MemberDTO dto = new MemberDTO();
+				dto.setName(rs.getString("name"));
+				dto.setAuth(rs.getString("auth"));
+				dto.setId(rs.getString("id"));
+				dto.setPass(rs.getString("pass"));
+				dto.setTel(rs.getString("tel"));
+				dto.setMobile(rs.getString("mobile"));
+				dto.setEmail(rs.getString("email"));
+				dto.setOpen_email(rs.getString("open_email"));
+				dto.setAddress(rs.getString("address"));
+				dto.setRegidate(rs.getString("regiDate"));
+				
+				list.add(dto);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("멤버 정보 조회 시 예외 발생");
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 	public MemberDTO getMemberInfo(String id) {
 		MemberDTO dto = new MemberDTO();
 		try {
@@ -152,6 +183,21 @@ public class MemberDAO {
 			psmt.setString(6, dto.getEmail());
 			psmt.setString(7, dto.getOpen_email());
 			psmt.setString(8, dto.getAddress());
+			result = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("아이디 중복 확인 시 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public int deleteMember(String id) {
+		int result = 0;
+		try {
+			String query = " DELETE FROM membership WHERE id = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, id);
 			result = psmt.executeUpdate();
 		}
 		catch(Exception e) {

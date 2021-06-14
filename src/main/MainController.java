@@ -15,7 +15,6 @@ import community.CommuinityDAO;
 import community.CommunityDTO;
 import member.MemberDAO;
 import member.MemberDTO;
-import utils.CalendarPrint;
 import utils.CookieManager;
 
 @WebServlet("/main/main.do") 
@@ -52,7 +51,7 @@ public class MainController extends HttpServlet{
 		List<CommunityDTO> photoList = bDao.previewList("photo");
 		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH);
+		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
 		
 		req.setAttribute("noticeList", noticeList);
 		req.setAttribute("freeList", freeList);

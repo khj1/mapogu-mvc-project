@@ -13,10 +13,16 @@ public class CommunityDTO {
 	private String name; // inner join
 	private String email; // inner join
 	private int visitcount; 
-	private int downcount; 
-	private int likecount; 
+	private int downcount;
+	private String caldate;
 	
 	
+	public String getCaldate() {
+		return caldate;
+	}
+	public void setCaldate(String caldate) {
+		this.caldate = caldate;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -95,17 +101,4 @@ public class CommunityDTO {
 	public void setDowncount(int downcount) {
 		this.downcount = downcount;
 	}
-	public int getLikecount() {
-		return likecount;
-	}
-	public void setLikecount(int likecount) {
-		this.likecount = likecount;
-	}
-	public int getHatecount() {
-		return hatecount;
-	}
-	public void setHatecount(int hatecount) {
-		this.hatecount = hatecount;
-	}
-	private int hatecount;
 }

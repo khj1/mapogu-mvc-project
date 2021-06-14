@@ -2,10 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%
-String[] day = {"일", "월", "화", "수", "목", "금", "토"};
-pageContext.setAttribute("day", day);
-%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,26 +13,45 @@ pageContext.setAttribute("day", day);
 </style>
 <script src="../bootstrap3.3.7/jquery/jquery-3.6.0.min.js"></script>
 <script>
+	var year = ${year};
+	var month = ${month};
+	
 	$(function(){
-		$.ajax({
-			url: "../calendar/preview.cal",
-			type: "get",
-			dataType: "json",
-			success: function(data){
-				var html = "";
-				$.each(data, function(index, week){
-					html += "<tr>";
-					$.each(week, function(index, day){
-						html += "<th><a href=''>" + day + "</a></th>";
-					});
-					html += "</tr>";
-				});
-			},
-			error: function(data){
-				alert("ERROR: " + data.status + ":" + data.statusText);
+		// 문서가 로드될 때 캘린더 표시하기
+		getCalendar(year, month);
+		
+		// 이전달 버튼을 눌렀을 때
+		$("#prev_month").click(function(){
+			if(month == 1){
+				year = year - 1;
+				month = 12;
 			}
+			else{
+				month = month - 1;
+			}
+			$("#dayImages").nextAll().empty();
+			getCalendar(year, month);
 		});
 		
+		// 다음달 버튼을 눌렀을 때
+		$("#next_month").click(function(){
+			if(month == 12){
+				year = year + 1;
+				month = 1;
+			}
+			else{
+				month = month + 1;
+			}
+			$("#dayImages").nextAll().empty();
+			getCalendar(year, month);
+		});
+		
+		//캘린더의 날짜 클릭
+		$("#today").click(function(){
+			location.href = "../calendar/list.cal?flag=cal&year="+ year +"&month=" + month + "#calendar_start";
+		})
+		
+		//폼값 전송 시
 		$("form").submit(function(){
 			if(!$("input[name='user_id']").val()){
 				alert("아이디를 입력해주세요.");
@@ -50,6 +65,43 @@ pageContext.setAttribute("day", day);
 			}
 		});
 	});
+	
+	// 해당 년,월에 해당하는 캘린더 출력
+	function getCalendar(year_input, month_input) {
+		$.ajax({
+			url: "../calendar/preview.cal",
+			type: "get",
+			data: {
+				year : year_input,
+				month : month_input
+			},
+			dataType: "json",
+			success: function(data){
+				var html = "";
+				$.each(data, function(index, week){
+					html += "<tr>";
+					$.each(week, function(index, day){
+						if(index == 0){
+							html += "<th style='color:red;'>" + day + "</th>";
+						}
+						else if(index == 6){
+							html += "<th style='color:#1c8dff;'>" + day + "</th>";
+						}
+						else{
+							html += "<th>" + day + "</th>";
+						}
+					});
+					html += "</tr>";
+				});
+				$("#today").html(year + "년&nbsp;" + month + "월");
+				$("#dayImages").after(html);
+				
+			},
+			error: function(data){
+				alert("ERROR: " + data.status + ":" + data.statusText);
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -134,14 +186,14 @@ pageContext.setAttribute("day", day);
 							<col width="13px;" />
 						</colgroup>
 						<tr>
-							<td><a href=""><img src="../images/cal_a01.gif" style="margin-top:3px;" /></a></td>
-							<td><img src="../images/calender_2012.gif" />&nbsp;&nbsp;<img src="../images/calender_m1.gif" /></td>
-							<td><a href=""><img src="../images/cal_a02.gif" style="margin-top:3px;" /></a></td>
+							<td><img id="prev_month" src="../images/cal_a01.gif" style="margin-top:3px; cursor: pointer;" /></td>
+							<td id="today" style="font-weight: bold; font-size: 1.1em; cursor: pointer;"></td>
+							<td><img id="next_month" src="../images/cal_a02.gif" style="margin-top:3px; cursor: pointer;" /></td>
 						</tr>
 					</table>
 				</div>
 				<div class="cal_bottom">
-					<table id="calendar" cellpadding="0" cellspacing="0" border="0" class="calendar">
+					<table cellpadding="0" cellspacing="0" border="0" class="calendar">
 						<colgroup>
 							<col width="14%" />
 							<col width="14%" />
@@ -151,7 +203,7 @@ pageContext.setAttribute("day", day);
 							<col width="14%" />
 							<col width="*" />
 						</colgroup>
-						<tr>
+						<tr id ="dayImages">
 							<th><img src="../images/day01.gif" alt="S" /></th>
 							<th><img src="../images/day02.gif" alt="M" /></th>
 							<th><img src="../images/day03.gif" alt="T" /></th>
@@ -180,7 +232,6 @@ pageContext.setAttribute("day", day);
 												${photo.title }
 											</c:otherwise>
 										</c:choose>
-										
 									</a>
 								</dd>
 							</dl> 

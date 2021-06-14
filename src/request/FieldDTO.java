@@ -6,14 +6,15 @@ public class FieldDTO {
 	private String isdis; 
 	private String disType; 
 	private String useDev; 
-	private String typeDev; 
+	private String devType; 
 	private String tel; 
 	private String mobile; 
 	private String email; 
 	private String cake; 
 	private String cookie; 
-	private String date; 
+	private String reqDate; 
 	private String receiptType; 
+	private String etc;
 	
 	public String getIdx() {
 		return idx;
@@ -45,11 +46,11 @@ public class FieldDTO {
 	public void setUseDev(String useDev) {
 		this.useDev = useDev;
 	}
-	public String getTypeDev() {
-		return typeDev;
+	public String getDevType() {
+		return devType;
 	}
-	public void setTypeDev(String typeDev) {
-		this.typeDev = typeDev;
+	public void setDevType(String devType) {
+		this.devType = devType;
 	}
 	public String getTel() {
 		return tel;
@@ -81,11 +82,11 @@ public class FieldDTO {
 	public void setCookie(String cookie) {
 		this.cookie = cookie;
 	}
-	public String getDate() {
-		return date;
+	public String getReqDate() {
+		return reqDate;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setReqDate(String reqDate) {
+		this.reqDate = reqDate;
 	}
 	public String getReceiptType() {
 		return receiptType;
@@ -99,5 +100,5 @@ public class FieldDTO {
 	public void setEtc(String etc) {
 		this.etc = etc;
 	}
-	private String etc;
+	
 }
