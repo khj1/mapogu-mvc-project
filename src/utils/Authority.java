@@ -14,6 +14,14 @@ public class Authority {
 		return true;
 	}
 	
+	public static boolean isLogin_admin(HttpServletResponse resp, HttpSession session) {
+		if(session.getAttribute("user_id") == null) {
+			JSFunction.alertLocation(resp, "로그인 후 이용해주세요.", "../admin/login.jsp");
+			return false;
+		}
+		return true;
+	}
+	
 	public static boolean checkAuth (HttpServletResponse resp, HttpSession session, String flag) {
 		String auth = session.getAttribute("auth").toString();
 		if(flag.equals("data") && auth.equals("com")) {

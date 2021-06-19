@@ -12,7 +12,7 @@ String month = request.getParameter("month");
  <script>
 	$(function(){
 		$("#list").click(function(){
-			location.href="../space/list.cal?year=<%=year%>&month=<%=month%>";
+			location.href="../space/sub02.jsp?year=<%=year%>&month=<%=month%>";
 		});
 	});
  </script>

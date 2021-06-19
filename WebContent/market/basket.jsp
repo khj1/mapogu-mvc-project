@@ -5,8 +5,9 @@
 <!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <style>
 	th{text-align: center;}
-	#productImg{width: 70px; height: 50px;}
 	input[type='number']{width: 30px;}
+	#productImg{width: 70px; height: 50px;}
+    #buy_now{color:white; font-size: 1.3em; background-color:#F79A2B; width:152px; height: 42px; border: none; border-radius: 3px; position: relative; top: 2px;} 
 </style>
 <script>
 	$(function(){
@@ -22,10 +23,6 @@
 		total = moneyFormat(total) + "원";
 		$("#sum").html(total);
 		$("#payment").html(total);
-		
-		
-		// 문서가 로드될 때 
-		
 		
 		// 수량 변경 시 DB 및 합계 변경
 		$("input[type='number']").bind('mouseup', function(){
@@ -50,7 +47,6 @@
 		// 체크 해제 시 합계 변경
 		$("input[type='checkbox'][name='cart']").change(function(){
 			var wrapper = $(this).closest('tr');
-			
 			var goods_product_idx = wrapper.find("input[name='goods_product_idx']").val();
 			var checked_total_price = parseInt(wrapper.find("input[name='goods_total_price']").val());
 			var goods_total_sum = parseInt($("#goods_total_sum").val());
@@ -188,7 +184,7 @@
 					<!-- 쇼핑 계속하기 버튼 -->
 					<a href="../market/list.do?flag=suamil"><img src="../images/market/basket_btn01.gif" style="cursor: pointer;"/></a>&nbsp;
 					<!-- 구매 버튼 -->
-					<img id="buy_now" src="../images/market/basket_btn02.gif" style="cursor: pointer;"/>
+					<button type="button" id="buy_now">선택상품주문</button>
 				</p>
 				
 			</div>

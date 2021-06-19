@@ -14,13 +14,24 @@
 	.calendar_content td{ border: 1px solid black; height: 100px;}
  </style> 
  <script>
- 	var year = ${year};
-	var month = ${month};
-	var i = 14;
+ 	var now = new Date();
+ 	var year = now.getFullYear();
+	var month = now.getMonth() + 1;
+	
+ 	var yearStr = <%=request.getParameter("year") %>;
+ 	var monthStr = <%=request.getParameter("month") %>;
+ 	
+ 	if(yearStr && monthStr){
+	 	year = parseInt(yearStr);
+		month = parseInt(monthStr);
+ 	}
+	var board_idx;
+	var title;
+	var calDate;
  	
  	$(function(){
  		// 문서가 로드될 때 달력 레이아웃 출력
- 		getCalendar(year, month);
+ 		setList(year, month);
  		
  		// 이전달 버튼을 눌렀을 때
 		$("#prev_month").click(function(){
@@ -31,7 +42,7 @@
 			else{
 				month = month - 1;
 			}
-			location.href="../space/list.cal?year=" + year + "&month=" + month + "#calendar_start";
+			setList(year, month);
 		});
 		
 		// 다음달 버튼을 눌렀을 때
@@ -43,11 +54,30 @@
 			else{
 				month = month + 1;
 			}
-			location.href="../space/list.cal?year=" + year + "&month=" + month + "#calendar_start";
+			setList(year, month);
 		});
  	});
  	
- 	function getCalendar(year_input, month_input) {
+ 	function setList(year_input, month_input){
+ 		$.ajax({
+			url: "../space/list.cal",
+			type: "get",
+			data: {
+				year : year_input,
+				month : month_input
+			},
+			dataType: "json",
+			success : function(info){
+				getCalendar(year_input, month_input, info);
+			},
+			error : function(error){
+				alert("ERROR: " + error.status + " : " + error.statusText);
+			}
+			
+		});
+ 	}
+ 	
+ 	function getCalendar(year_input, month_input, info) {
 		$.ajax({
 			url: "../calendar/preview.cal",
 			type: "get",
@@ -62,31 +92,33 @@
 					html += "<tr>";
 					$.each(week, function(index, day){
 						if(index == 0){
-							html += "<td id=" + day + " valign='top' style='color:red;'>";
+							html += "<td valign='top' style='color:red;'>";
 						}
 						else if(index == 6){
-							html += "<td id=" + day + " valign='top' style='color:#1c8dff;'>";
+							html += "<td valign='top' style='color:#1c8dff;'>";
 						}
 						else{
-							html += "<td id=" + day + " valign='top'>";
+							html += "<td valign='top'>";
 						}
 						
 						html += 	day + "<br/>" ; 
 						
 						// 해당 날짜에 맞는 게시물 출력
-						<c:forEach items="${cList}" var="cDto">
-							var dayStr = ${cDto.caldate.substring(8,10)};
+						$.each(info, function(index, obj){
+							var dayStr = obj.caldate.substring(8,10);
 							var calDay = parseInt(dayStr);
 							if(calDay == day){
-								html +=  "<a href='../space/sub02_view.jsp?board_idx=${cDto.board_idx }&year=${year}&month=${month}'> ${cDto.title} </a>";
+								html +=  "<a href='../space/sub02_view.jsp?board_idx=" + obj.board_idx + "&year=" + year + "&month=" + month + "'> " + obj.title + " </a>";
 							}
-						</c:forEach>
+						})
 						
 						html += "</td>";
 					});
 					html += "</tr>";
 				});
 				$("#today").html(year + "년&nbsp;" + month + "월");
+				// $("#dayImages").nextAll().empty(); 위치를 바꾸면 페이지 상단으로 이동하는 문제 발생.
+				$("#dayImages").nextAll().empty();
 				$("#dayImages").after(html);
 				
 			},
@@ -153,7 +185,6 @@
 								<th>토</th>
 							</tr>
 						</table>
-						<a name="calendar_start"></a> <!-- 앵커 지정 -->
 					</div>
 				</div>
 				<!-- 캘린더 끝 -->

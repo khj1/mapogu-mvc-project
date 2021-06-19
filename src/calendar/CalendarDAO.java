@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import community.CommunityDTO;
 
 public class CalendarDAO {
@@ -35,8 +38,8 @@ public class CalendarDAO {
 //		
 //	}
 	
-	public List<CommunityDTO> selectList(int year, int month){
-		List<CommunityDTO> list = new ArrayList<CommunityDTO>();
+	public JSONArray selectList(int year, int month){
+		JSONArray jsonArr = new JSONArray();
 		try {
 			String query = ""
 					+ " SELECT board_idx, title, calDate FROM multi_board "
@@ -48,19 +51,19 @@ public class CalendarDAO {
 			rs = psmt.executeQuery();
 			
 			while(rs.next()) {
-				CommunityDTO dto = new CommunityDTO();
-				dto.setBoard_idx(rs.getString("board_idx"));
-				dto.setTitle(rs.getString("title"));
-				dto.setCaldate(rs.getString("caldate"));
+				JSONObject jsonObj = new JSONObject(); 
+				jsonObj.put("board_idx", rs.getString("board_idx"));
+				jsonObj.put("title", rs.getString("title"));
+				jsonObj.put("caldate", rs.getString("caldate"));
 				
-				list.add(dto);
+				jsonArr.add(jsonObj);
 			}
 		}
 		catch (Exception e) {
 			System.out.println("캘린더 게시물 정보를 불러오는 중 예외 발생");
 			e.printStackTrace();
 		}
-		return list;
+		return jsonArr;
 	}
 	
 	

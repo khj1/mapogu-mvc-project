@@ -292,7 +292,7 @@ public class CommuinityDAO {
 			String query = "INSERT INTO multi_board ( "
 					+ " id, title, content, ofile, sfile, pass, flag, calDate) "
 					+ " VALUES ( "
-					+ " ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s') ";
+					+ " ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, '%Y-%m-%d')) ";
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getId());
 			psmt.setString(2, dto.getTitle());

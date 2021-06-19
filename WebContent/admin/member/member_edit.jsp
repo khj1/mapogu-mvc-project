@@ -27,13 +27,17 @@
 </head>
 <script>
 	$(function(){
-		$("#delete").click(function(){
-			if(confirm("삭제하시겠습니까?")){
-				location.href="../admin/del.do?flag=member&id=${dto.id}";
+		$("#frm").submit(function(){
+			var auth = $("input[name='auth']");
+			if(!auth.val()){
+				alert("권한을 설정해주세요.");
+				auth.focus();
+				return false;
 			}
 		});
-		$("#edit").click(function(){
-			location.href="../admin/edit.do?flag=member&id=${dto.id}";
+			
+		$("#cancel").click(function(){
+			location.href="../admin/list.do?flag=${flag}&type";
 		});
 	});
 </script>
@@ -56,8 +60,10 @@
           <div class="card-header">
             <i class="fas fa-table"></i>
             회원 관리 / 회원 정보</div>
+          <form action="../admin/edit.do" method="post" id="frm">
           <div class="card-body">
             <div class="table-responsive">
+              <input type="hidden" name="id" value="${id }"/>
               <table class="table table-bordered">
 					<colgroup>
 						<col width="10%" />
@@ -69,7 +75,7 @@
 					</tr>
 					<tr>
 						<th>권한</th>
-						<td>${dto.auth }</td>
+						<td><input name="auth" type="text" class="form-control"/></td>
 					</tr>
 					<tr>
 						<th>아이디</th>
@@ -99,9 +105,10 @@
             </div>
           </div> 
           <div style="text-align: right;">
-          	<button id = "edit" type="button" class="btn btn-success" style="margin-right: 10px; margin-bottom: 10px;">권한수정</button>
-          	<button id = "delete" type="button" class="btn btn-danger" style="margin-right: 10px; margin-bottom: 10px;">삭제하기</button>
+          	<button id = "cancel" type="button" class="btn btn-danger" style="margin-right: 10px; margin-bottom: 10px;">취소하기</button>
+          	<button id = "edit" type="submit" class="btn btn-success" style="margin-right: 10px; margin-bottom: 10px;">권한수정</button>
           </div>
+          </form>
           <div class="card-footer small text-muted">Updated at 11:59 PM</div>
         </div>
 

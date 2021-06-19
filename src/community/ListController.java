@@ -63,7 +63,7 @@ public class ListController extends HttpServlet implements BoardConfig{
 		map.put("pageSize", pageSize);
 		List<CommunityDTO> boardList = dao.selectList(map);
 		
-		String pagingStr = BoardPage.pagingImg2(totalCount, pageNum, req.getRequestURI(), searchStr);
+		String pagingStr = BoardPage.pagingImg2(totalCount, pageNum, req.getRequestURI(), searchStr, flag);
 
 		req.setAttribute("boardList", boardList);
 		req.setAttribute("searchStr", searchStr);

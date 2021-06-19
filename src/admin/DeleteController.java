@@ -20,8 +20,7 @@ public class DeleteController extends HttpServlet{
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		
-		if(!Authority.isLogin(resp, session))
-			JSFunction.alertLocation(resp, "로그인 후 이용해주세요.", "../admin/login.html");
+		if(!Authority.isLogin_admin(resp, session)) return;
 		else {
 			String id = session.getAttribute("user_id").toString();
 			if(!id.equals("administrator")) {

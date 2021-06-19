@@ -48,7 +48,8 @@
 		
 		//캘린더의 날짜 클릭
 		$("#today").click(function(){
-			location.href = "../calendar/list.cal?flag=cal&year="+ year +"&month=" + month + "#calendar_start";
+			location.href = "../space/sub02.jsp?year="+ year +"&month=" + month;
+			//location.href = "../calendar/list.cal?flag=cal&year="+ year +"&month=" + month + "#calendar_start";
 		})
 		
 		//폼값 전송 시

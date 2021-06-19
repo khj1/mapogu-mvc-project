@@ -23,16 +23,42 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
   <script src="../bootstrap3.3.7/jquery/jquery-3.6.0.min.js"></script>
-
 </head>
 <script>
 	$(function(){
-		$("#write").click(function(){
-			location.href="../admin/del.do?flag=board&type=calendar&board_idx=${dto.board_idx}";
+		$("#frm").submit(function(){
+			var caldate = $("input[name='caldate']");
+			var title = $("input[name='title']");
+			var content = $("textarea[name='content']");
+			
+			if(!caldate.val()){
+				alert("날짜를 입력해주세요.");
+				caldate.focus();
+				return false;
+			}
+			if(!title.val()){
+				alert("제목을 입력해주세요.");
+				title.focus();
+				return false;
+			}
+			if(!content.val()){
+				alert("내용을 입력해주세요.");
+				content.focus();
+				return false;
+			}
 		});
+			
 		$("#cancel").click(function(){
-			location.href="../admin/del.do?flag=board&type=calendar&board_idx=${dto.board_idx}";
+			location.href="../admin/list.do?flag=${flag}&type=${type}";
 		});
+		
+		// 날짜선택을 편리하게 해주는 Date Picker
+        $( "input[name='caldate']" ).datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        $( "#anim" ).on( "change", function() {
+            $( "input[name='caldate']" ).datepicker( "option", "showAnim", $( this ).val() );
+        });
 	});
 </script>
 <body id="page-top">
@@ -54,50 +80,49 @@
           <div class="card-header">
             <i class="fas fa-table"></i>
             게시판 관리 / 프로그램 일정</div>
+         <form action="../admin/write.do" method="post" id="frm">
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-bordered">
-<colgroup>
-	<col width="20%"/>
-	<col width="30%"/>
-	<col width="20%"/>
-	<col width="*"/>
-</colgroup>
-<tbody>
-	<tr>
-		<th class="text-center" 
-			style="vertical-align:middle;">작성자</th>
-		<td>
-			<input id="name" type="text" />
-		</td>
-		<th class="text-center" 
-			style="vertical-align:middle;">날짜</th>
-		<td>
-			<input id="caldate" type="text" />
-		</td>
-	</tr>
-	<tr>
-		<th class="text-center" 
-			style="vertical-align:middle;">제목</th>
-		<td colspan="3">
-			<input id="title" type="text" />
-		</td>
-	</tr>
-	<tr>
-		<th class="text-center" 
-			style="vertical-align:middle;">내용</th>
-		<td colspan="3">
-			<input id="content" type="text" />
-		</td>
-	</tr>
-</tbody>
-</table>
+				<colgroup>
+					<col width="20%"/>
+					<col width="*"/>
+				</colgroup>
+				<tbody>
+					<tr>
+						<td style="display: none;">
+							<input type="hidden" name="flag" value="${flag }"/>
+							<input type="hidden" name="type" value="${type }"/>
+						</td>
+						<th class="text-center" 
+							style="vertical-align:middle;">날짜</th>
+						<td>
+							<input name="caldate" type="text" class="form-control"/>
+						</td>
+					</tr>
+					<tr>
+						<th class="text-center" 
+							style="vertical-align:middle;">제목</th>
+						<td colspan="3">
+							<input name="title" type="text" class="form-control"/>
+						</td>
+					</tr>
+					<tr>
+						<th class="text-center" 
+							style="vertical-align:middle;">내용</th>
+						<td>
+							<textarea name="content" rows="10" class="form-control"></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
             </div>
           </div> 
           <div style="text-align: right;">
           	<button id="cancel" type="button" class="btn btn-danger" style="margin-right: 10px; margin-bottom: 10px;">취소하기</button>
-          	<button id="write" type="button" class="btn btn-info" style="margin-right: 10px; margin-bottom: 10px;">글쓰기</button>
+          	<button id="write" type="submit" class="btn btn-info" style="margin-right: 10px; margin-bottom: 10px;">글쓰기</button>
           </div>
+		</form>
           <div class="card-footer small text-muted">Updated at 11:59 PM</div>
         </div>
 

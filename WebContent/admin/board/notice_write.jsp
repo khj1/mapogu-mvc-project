@@ -12,7 +12,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>회원 관리</title>
+  <title>게시판 관리</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -23,17 +23,27 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
   <script src="../bootstrap3.3.7/jquery/jquery-3.6.0.min.js"></script>
-
 </head>
 <script>
 	$(function(){
-		$("#delete").click(function(){
-			if(confirm("삭제하시겠습니까?")){
-				location.href="../admin/del.do?flag=member&id=${dto.id}";
+		$("#frm").submit(function(){
+			var title = $("input[name='title']");
+			var content = $("textarea[name='content']");
+			
+			if(!title.val()){
+				alert("제목을 입력해주세요.");
+				title.focus();
+				return false;
+			}
+			if(!content.val()){
+				alert("내용을 입력해주세요.");
+				content.focus();
+				return false;
 			}
 		});
-		$("#edit").click(function(){
-			location.href="../admin/edit.do?flag=member&id=${dto.id}";
+			
+		$("#cancel").click(function(){
+			location.href="../admin/list.do?flag=${flag}&type=${type}";
 		});
 	});
 </script>
@@ -55,53 +65,58 @@
         <div class="card mb-3">
           <div class="card-header">
             <i class="fas fa-table"></i>
-            회원 관리 / 회원 정보</div>
+            게시판 관리 / 공지사항</div>
+         <form action="../admin/write.do" method="post" id="frm">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered">
-					<colgroup>
-						<col width="10%" />
-						<col width="*" />
-					</colgroup>
+				<table class="table table-bordered">
+				<colgroup>
+					<col width="20%"/>
+					<col width="*"/>
+				</colgroup>
+				<tbody>
 					<tr>
-						<th>이름</th>
-						<td>${dto.name }</td>
+						<td style="display: none;">
+							<input type="hidden" name="type" value="${type }" />
+							<input type="hidden" name="flag" value="${flag }" />
+						</td>
+						<th class="text-center" 
+							style="vertical-align:middle;">작성자</th>
+						<td>
+							<input name="name" type="text" value="관리자"
+								class="form-control" style="width:100px;" readOnly/>
+						</td>
 					</tr>
 					<tr>
-						<th>권한</th>
-						<td>${dto.auth }</td>
+						<th class="text-center" 
+							style="vertical-align:middle;">제목</th>
+						<td>
+							<input name="title" type="text" class="form-control" />
+						</td>
 					</tr>
 					<tr>
-						<th>아이디</th>
-						<td>${dto.id }</td>
+						<th class="text-center" 
+							style="vertical-align:middle;">내용</th>
+						<td>
+							<textarea name="content" rows="10" class="form-control"></textarea>
+						</td>
 					</tr>
-					<tr>
-						<th>비밀번호</th>
-						<td>${dto.pass }</td>
-					</tr>
-					<tr>
-						<th>전화번호</th>
-						<td>${dto.tel }</td>
-					</tr>
-					<tr>
-						<th>핸드폰번호</th>
-						<td>${dto.mobile }</td>
-					</tr>
-					<tr>
-						<th>이메일</th>
-						<td>${dto.email }</td>
-					</tr>
-					<tr>
-						<th>주소</th>
-						<td>${dto.address }</td>
-					</tr>
+<!-- 					<tr> -->
+<!-- 						<th class="text-center"  -->
+<!-- 							style="vertical-align:middle;">첨부파일</th> -->
+<!-- 						<td> -->
+<!-- 							<input name="ofile" type="file" class="form-control" /> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+				</tbody>
 				</table>
             </div>
           </div> 
           <div style="text-align: right;">
-          	<button id = "edit" type="button" class="btn btn-success" style="margin-right: 10px; margin-bottom: 10px;">권한수정</button>
-          	<button id = "delete" type="button" class="btn btn-danger" style="margin-right: 10px; margin-bottom: 10px;">삭제하기</button>
+          	<button id="cancel" type="button" class="btn btn-danger" style="margin-right: 10px; margin-bottom: 10px;">취소하기</button>
+          	<button id="write" type="submit" class="btn btn-info" style="margin-right: 10px; margin-bottom: 10px;">글쓰기</button>
           </div>
+		</form>
           <div class="card-footer small text-muted">Updated at 11:59 PM</div>
         </div>
 
@@ -140,7 +155,7 @@
         </div>
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <button id="delete" class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
           <a class="btn btn-primary" href="login.html">Logout</a>
         </div>
       </div>

@@ -36,10 +36,8 @@ public class MemberDAO {
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, id);
 			rs = psmt.executeQuery(); rs.next();
-			if(rs.next()) {
-				if(rs.getInt(1) > 0)
-					result = true;
-			}
+			if(rs.getInt(1) > 0)
+				result = true;
 			else {
 				result = false;
 			}
@@ -187,6 +185,22 @@ public class MemberDAO {
 		}
 		catch(Exception e) {
 			System.out.println("아이디 중복 확인 시 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public int updateAuth(String id, String auth) {
+		int result = 0;
+		try {
+			String query = " UPDATE membership SET auth = ? WHERE id = ? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, auth);
+			psmt.setString(2, id);
+			result = psmt.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("권한 변경 중 예외 발생");
 			e.printStackTrace();
 		}
 		return result;

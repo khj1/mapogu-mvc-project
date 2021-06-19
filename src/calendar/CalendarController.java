@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+
 import community.CommunityDTO;
 import utils.CalendarPrint;
 
@@ -32,6 +34,8 @@ public class CalendarController extends HttpServlet{
 	}
 	
 
+
+
 	protected void previewCalendar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		try {
 			//캘린더 게시판 미리보기 기능
@@ -49,23 +53,17 @@ public class CalendarController extends HttpServlet{
 	}
 	
 	private void showCalendarList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
 		String yearStr = req.getParameter("year");
 		String monthStr = req.getParameter("month");
 		
-		if(yearStr != null && monthStr != null){
-			year = Integer.parseInt(yearStr);
-			month = Integer.parseInt(monthStr);
-		}
+		int year = Integer.parseInt(yearStr);
+		int month = Integer.parseInt(monthStr);
 		
 		CalendarDAO cDao = new CalendarDAO();
-		List<CommunityDTO> cList = cDao.selectList(year, month);
+		JSONArray jsonArr = cDao.selectList(year, month);
 		
-		req.setAttribute("cList", cList);
-		req.setAttribute("year", year);
-		req.setAttribute("month", month);
-		
-		req.getRequestDispatcher("/space/sub02.jsp").forward(req, resp);
+		resp.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = resp.getWriter();
+		out.write(jsonArr.toString());
 	}
 }
